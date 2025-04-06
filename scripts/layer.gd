@@ -31,8 +31,16 @@ func trigger_node(coords):
 
 func destroy_node(coords):
 	var old_node = tile_grid[coords.x][coords.y]
+	if old_node.state == 0:
+		old_node.reveal()
+		await get_tree().create_timer(0.25).timeout
+	
 	if old_node is GapTile:
 		return
+	if old_node is UnstableTile:
+		if old_node.state != 2:
+			old_node.activate()
+			return
 	var old_position = old_node.position
 	tile_container.remove_child(old_node)
 	old_node.queue_free()

@@ -11,10 +11,10 @@ enum states {HIDDEN, REVEALED, ACTIVATED}
 	states.ACTIVATED: 0,
 }
 var state = states.HIDDEN
-
-@onready var activate_particles = $ActivateParticles
+var activate_particles : CPUParticles2D
 
 func _ready() -> void:
+	activate_particles = find_child("ActivateParticles")
 	set_state(states.HIDDEN)
 
 func reveal():
@@ -43,3 +43,11 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 
 func trigger_effect():
 	print_debug("Not implemented")
+
+func await_reveal(interval, done):
+	if state == states.HIDDEN:
+		set_state(states.REVEALED)
+		interval += 0.15
+	var tween = get_tree().create_tween()
+	tween.tween_interval(interval)
+	tween.tween_callback(done)

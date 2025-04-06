@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=13 format=3 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://dl6lnp3esmmgm" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcogp6rh8wwx5" path="res://scenes/solid_tile.tscn" id="2_yqjtg"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://y72oi8vqaxud" path="res://scripts/camera.gd" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://bfnh4tepcvgu4" path="res://scenes/unstable_tile.tscn" id="5_p57ef"]
 [ext_resource type="Shader" uid="uid://bl24edo4whpii" path="res://sprites/hidden_layer.gdshader" id="6_u5sy4"]
+[ext_resource type="Theme" uid="uid://dlvne1101apsl" path="res://ui/fonts/default_theme.tres" id="8_gee14"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vtaks"]
 resource_local_to_scene = true
@@ -151,12 +152,6 @@ position = Vector2(0, -16)
 [node name="SolidTile26" parent="Layers/Layer1/TileContainer" instance=ExtResource("2_yqjtg")]
 position = Vector2(8, -4)
 
-[node name="SolidTile10" parent="Layers/Layer1/TileContainer" instance=ExtResource("2_yqjtg")]
-position = Vector2(-16, 0)
-
-[node name="SolidTile12" parent="Layers/Layer1/TileContainer" instance=ExtResource("2_yqjtg")]
-position = Vector2(-8, -4)
-
 [node name="SolidTile11" parent="Layers/Layer1/TileContainer" instance=ExtResource("2_yqjtg")]
 position = Vector2(-24, -4)
 
@@ -206,6 +201,12 @@ position = Vector2(0, 8)
 position = Vector2(-24, 4)
 
 [node name="UnstableTile2" parent="Layers/Layer1/TileContainer" instance=ExtResource("5_p57ef")]
+
+[node name="UnstableTile3" parent="Layers/Layer1/TileContainer" instance=ExtResource("5_p57ef")]
+position = Vector2(-8, -4)
+
+[node name="UnstableTile4" parent="Layers/Layer1/TileContainer" instance=ExtResource("5_p57ef")]
+position = Vector2(-16, 0)
 
 [node name="Layer2" type="CanvasGroup" parent="Layers"]
 z_as_relative = false
@@ -381,3 +382,25 @@ editor_draw_drag_margin = true
 script = ExtResource("5_iywne")
 
 [node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Margin" type="MarginContainer" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("8_gee14")
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 8
+
+[node name="Instability" type="ProgressBar" parent="HUD/Margin"]
+modulate = Color(0.811765, 0.662745, 0.541176, 1)
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+step = 1.0
+show_percentage = false

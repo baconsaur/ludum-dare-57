@@ -2,13 +2,18 @@ extends Node2D
 
 @export var start_tiles : Array[Vector2i]
 @export var probe_radius : int = 0
+@export var max_instability : int = 10
 
 var current_layer = 0
+var instability = 0
 
 @onready var layers = $Layers
 @onready var camera = $Camera2D
+@onready var instability_progress = $HUD/Margin/Instability
 
 func _ready() -> void:
+	instability_progress.max_value = max_instability
+	
 	camera.connect("target_layer", target_layer)
 	var start_layer : Node2D = layers.find_child("Layer0")
 	for tile in start_tiles:
@@ -25,15 +30,14 @@ func _ready() -> void:
 		layer.z_index -= i
 		i += 1
 		layer.connect("drop_probe", drop_probe.bind(i))
-		layer.connect("destroyed", camera.shake)
+		layer.connect("destroyed", destroy_tile)
 		layer.get_radius = get_radius
 
 func drop_probe(coords, index):
 	var layer = get_layer(index)
 	if layer:
 		var hit_tile = layer.trigger_node(coords)
-		if hit_tile is not GapTile:
-			change_layer(layer, index)
+		change_layer(layer, index)
 
 func get_radius():
 	return probe_radius
@@ -66,3 +70,15 @@ func target_layer(offset):
 	var layer = get_layer(index)
 	if layer and layer.visible:
 		change_layer(layer, index)
+
+func destroy_tile():
+	instability += 1
+	instability_progress.value = instability
+	camera.shake()
+	var instability_percent = float(instability) / float(max_instability)
+	if instability_percent > 0.7:
+		instability_progress.modulate = Color("#9a6278")
+	elif instability_percent > 0.4:
+		instability_progress.modulate = Color("#c7786f")
+	if instability > max_instability:
+		print("oh no")

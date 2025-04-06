@@ -27,7 +27,7 @@ gap_tile = ExtResource("3_75krp")
 frame_index_map = Dictionary[int, int]({
 0: 0,
 1: 4,
-2: 3
+2: 9
 })
 
 [node name="UnstableTile" type="Area2D" parent="."]

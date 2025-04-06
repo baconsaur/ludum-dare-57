@@ -3,10 +3,10 @@ extends Camera2D
 signal target_layer
 
 @export var drag_delay = 1
-@export var drag_bounds_y = 85
+@export var drag_bounds_y = 75
 @export var drag_bounds_x = 80
 @export var shake_time = 0.25
-@export var shake_factor = 2
+@export var shake_factor = 1.5
 
 var shake_countdown = 0
 var shake_start = Vector2.ZERO
@@ -23,7 +23,7 @@ func _process(delta: float) -> void:
 	if shake_countdown <= 0:
 		offset = Vector2()
 	else:
-		offset += Vector2(
+		offset = Vector2(
 			randf_range(-shake_factor, shake_factor), randf_range(-shake_factor, shake_factor)
 		)
 
