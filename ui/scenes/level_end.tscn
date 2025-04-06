@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0ik1qmr7c3xm"]
+
+[ext_resource type="PackedScene" uid="uid://csjjjbo38bicy" path="res://ui/scenes/menu.tscn" id="1_5gle8"]
+[ext_resource type="Theme" uid="uid://dlvne1101apsl" path="res://ui/default_theme.tres" id="2_k3dij"]
+[ext_resource type="PackedScene" uid="uid://bxkiuute3xtog" path="res://ui/scenes/modal.tscn" id="2_xo8w8"]
+
+[node name="LevelEnd" instance=ExtResource("1_5gle8")]
+theme = ExtResource("2_k3dij")
+
+[node name="Panel" type="Panel" parent="." index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Margin" parent="." index="1"]
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 8
+
+[node name="Body" parent="Margin/Content" index="1" instance=ExtResource("2_xo8w8")]
+layout_mode = 2
+
+[editable path="Margin/Content/Body"]

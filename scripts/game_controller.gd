@@ -3,18 +3,36 @@ extends Node2D
 @export var start_tiles : Array[Vector2i]
 @export var probe_radius : int = 0
 @export var max_instability : int = 10
+@export var levels : Array[PackedScene]
+@export var start_level = 0
 
 var current_layer = 0
 var instability = 0
+var score = 0
+var level = 0
+var layers : Node2D
 
-@onready var layers = $Layers
 @onready var camera = $Camera2D
 @onready var instability_progress = $HUD/Margin/Instability
+@onready var score_display = $HUD/Margin/Score
+@onready var hud_container = $HUD/Margin
+@onready var action_blocker = $HUD/ModalContainer/Blocker
+@onready var level_end_modal = $HUD/ModalContainer/LevelEnd
+@onready var level_end_title = $HUD/ModalContainer/LevelEnd/Margin/Content/Title
+@onready var level_end_text = $HUD/ModalContainer/LevelEnd/Margin/Content/Body/Text
 
 func _ready() -> void:
 	instability_progress.max_value = max_instability
-	
+	level_end_modal.hide()
 	camera.connect("target_layer", target_layer)
+	
+	level = start_level
+	init_level()
+
+func init_level():
+	layers = levels[level].instantiate()
+	add_child(layers)
+	
 	var start_layer : Node2D = layers.find_child("Layer0")
 	for tile in start_tiles:
 		start_layer.reveal_node(tile)
@@ -31,6 +49,9 @@ func _ready() -> void:
 		i += 1
 		layer.connect("drop_probe", drop_probe.bind(i))
 		layer.connect("destroyed", destroy_tile)
+		layer.connect("escaped", escape_level)
+		layer.connect("got_artifact", update_score.bind(1))
+		layer.connect("lost_artifact", update_score.bind(-1))
 		layer.get_radius = get_radius
 
 func drop_probe(coords, index):
@@ -71,14 +92,46 @@ func target_layer(offset):
 	if layer and layer.visible:
 		change_layer(layer, index)
 
-func destroy_tile():
+func destroy_tile(nodes_remaining):
+	action_blocker.mouse_filter = 0
 	instability += 1
 	instability_progress.value = instability
 	camera.shake()
+	
+	if nodes_remaining <= 0:
+		action_blocker.mouse_filter = 1
+
 	var instability_percent = float(instability) / float(max_instability)
 	if instability_percent > 0.7:
 		instability_progress.modulate = Color("#9a6278")
 	elif instability_percent > 0.4:
 		instability_progress.modulate = Color("#c7786f")
+
 	if instability > max_instability:
-		print("oh no")
+		action_blocker.mouse_filter = 0
+		await get_tree().create_timer(1).timeout
+		show_level_end(false)
+
+func escape_level():
+	action_blocker.mouse_filter = 0
+	await get_tree().create_timer(1).timeout
+	action_blocker.mouse_filter = 1
+	show_level_end(true)
+
+func show_level_end(win=false):
+	if win:
+		level_end_title.text = "You Win"
+	else:
+		level_end_title.text = "You Died"
+		
+	get_tree().paused = true
+	level_end_modal.show()
+
+func _on_level_end_action_pressed() -> void:
+	level_end_modal.hide()
+	get_tree().paused = false
+	action_blocker.mouse_filter = 1
+
+func update_score(value):
+	score += value
+	score_display.text = str(score)

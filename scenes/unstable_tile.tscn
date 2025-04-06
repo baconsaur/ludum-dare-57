@@ -7,13 +7,13 @@
 [sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
 atlas = ExtResource("2_75krp")
 
-[sub_resource type="Curve" id="Curve_fo582"]
+[sub_resource type="Curve" id="Curve_75krp"]
 _data = [Vector2(0, 0.506247), 0.0, 0.0, 0, 0, Vector2(0.178363, 1), 0.0, 0.0, 0, 0, Vector2(0.722222, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
-[sub_resource type="Gradient" id="Gradient_5f12p"]
-offsets = PackedFloat32Array(0, 0.226667, 0.566667, 1)
-colors = PackedColorArray(0.803922, 0.831373, 0.647059, 1, 0.811765, 0.662745, 0.541176, 0.792157, 0.603922, 0.384314, 0.470588, 0.603922, 0.231373, 0.25098, 0.368627, 0)
+[sub_resource type="Gradient" id="Gradient_ls36s"]
+offsets = PackedFloat32Array(0, 0.28, 0.636667, 1)
+colors = PackedColorArray(0.811765, 0.662745, 0.541176, 0.792157, 0.6, 0.384, 0.4704, 0.796078, 0.2331, 0.253635, 0.37, 0.847059, 0.231373, 0.25098, 0.368627, 0)
 
 [node name="UnstableTile" type="Sprite2D"]
 use_parent_material = true
@@ -30,23 +30,23 @@ frame_index_map = Dictionary[int, int]({
 2: 9
 })
 
-[node name="UnstableTile" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="UnstableTile"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
 polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
 
 [node name="ActivateParticles" type="CPUParticles2D" parent="."]
 position = Vector2(0, -2)
 emitting = false
-amount = 30
-lifetime = 0.3
+amount = 50
+lifetime = 0.5
 one_shot = true
-speed_scale = 1.8
-explosiveness = 0.5
+speed_scale = 1.3
+explosiveness = 0.78
 randomness = 1.0
 lifetime_randomness = 1.0
 emission_shape = 3
-emission_rect_extents = Vector2(6, 3)
+emission_rect_extents = Vector2(6, 4)
 direction = Vector2(0, -1)
 spread = 40.0
 gravity = Vector2(0, 0)
@@ -55,9 +55,9 @@ initial_velocity_max = 50.0
 angular_velocity_max = 341.82
 radial_accel_max = 91.92
 tangential_accel_max = 28.28
-damping_min = 54.041
-damping_max = 56.061
-scale_amount_curve = SubResource("Curve_fo582")
-color_ramp = SubResource("Gradient_5f12p")
+damping_min = 71.213
+damping_max = 71.213
+scale_amount_curve = SubResource("Curve_75krp")
+color_ramp = SubResource("Gradient_ls36s")
 
-[connection signal="input_event" from="UnstableTile" to="." method="_on_input_event"]
+[connection signal="input_event" from="Area2D" to="." method="_on_input_event"]

@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxkiuute3xtog"]
+
+[ext_resource type="Theme" uid="uid://dlvne1101apsl" path="res://ui/default_theme.tres" id="1_dpjoo"]
+
+[node name="Body" type="VBoxContainer"]
+size_flags_vertical = 3
+theme = ExtResource("1_dpjoo")
+
+[node name="Text" type="RichTextLabel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Dolor sit amet, consectetur adipiscing elit. Sed sit amet vulputate turpis, eu varius sapien. Aliquam vitae tincidunt ante, vitae venenatis libero."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Actions" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="Close" type="Button" parent="Actions"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Close"

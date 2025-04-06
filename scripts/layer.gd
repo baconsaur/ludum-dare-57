@@ -3,6 +3,9 @@ extends Node2D
 signal triggered_node
 signal drop_probe
 signal destroyed
+signal escaped
+signal got_artifact
+signal lost_artifact
 
 const tile_height = 8
 const tile_width = 16
@@ -10,6 +13,7 @@ const tile_width = 16
 var gap_tile : PackedScene
 var tile_grid = []
 var get_radius : Callable = func(): return 0
+var nodes_to_destroy = 0
 
 @onready var tile_container = $TileContainer
 
@@ -31,16 +35,27 @@ func trigger_node(coords):
 
 func destroy_node(coords):
 	var old_node = tile_grid[coords.x][coords.y]
+
+	if not is_instance_valid(old_node):
+		return
+	
+	nodes_to_destroy += 1
+	
 	if old_node.state == 0:
 		old_node.reveal()
 		await get_tree().create_timer(0.25).timeout
 	
 	if old_node is GapTile:
+		nodes_to_destroy -= 1
 		return
 	if old_node is UnstableTile:
 		if old_node.state != 2:
 			old_node.activate()
+			nodes_to_destroy -= 1
 			return
+	if old_node is ArtifactTile and old_node.state == 2:
+		emit_signal("lost_artifact")
+
 	var old_position = old_node.position
 	tile_container.remove_child(old_node)
 	old_node.queue_free()
@@ -53,7 +68,8 @@ func destroy_node(coords):
 	new_node.create_gap()
 	new_node.call_deferred("set_state", 1)
 	
-	emit_signal("destroyed")
+	nodes_to_destroy -= 1
+	emit_signal("destroyed", nodes_to_destroy)
 
 func tiles_to_grid(tiles):
 	var positions = {}
@@ -130,3 +146,9 @@ func destroy(coords):
 
 func drop(coords):
 	emit_signal("drop_probe", coords)
+
+func escape_level(_coords):
+	emit_signal("escaped")
+
+func collect_artifact(_coords):
+	emit_signal("got_artifact")

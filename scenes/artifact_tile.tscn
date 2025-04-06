@@ -1,0 +1,151 @@
+[gd_scene load_steps=19 format=3 uid="uid://bg1mwdngq8s3c"]
+
+[ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="1_12wu3"]
+[ext_resource type="Script" uid="uid://de0bnbi6gxonh" path="res://scripts/artifact_tile.gd" id="2_12wu3"]
+[ext_resource type="Texture2D" uid="uid://d1fmiwegn4gc1" path="res://sprites/sparkles.png" id="3_fl12q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
+atlas = ExtResource("1_12wu3")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fl12q"]
+blend_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fl12q"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(0, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8r8gx"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(16, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nn3kr"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(32, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdmjy"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(48, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yxqyw"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(64, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rn7qg"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(80, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8l1s1"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(96, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0klsp"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(112, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hy1s1"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(128, 0, 16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xp5f4"]
+atlas = ExtResource("3_fl12q")
+region = Rect2(144, 0, 16, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hy1s1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fl12q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8r8gx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nn3kr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdmjy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yxqyw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rn7qg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8l1s1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0klsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hy1s1")
+}, {
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_xp5f4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="Curve" id="Curve_fo582"]
+_data = [Vector2(0, 0.506247), 0.0, 0.0, 0, 0, Vector2(0.178363, 1), 0.0, 0.0, 0, 0, Vector2(0.722222, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Gradient" id="Gradient_5f12p"]
+offsets = PackedFloat32Array(0.166667, 0.556667, 0.796667, 1)
+colors = PackedColorArray(0.803922, 0.831373, 0.647059, 1, 0.811765, 0.662745, 0.541176, 0.792157, 0.603922, 0.384314, 0.470588, 0.603922, 0.231373, 0.25098, 0.368627, 0)
+
+[node name="ArtifactTile" type="Sprite2D"]
+use_parent_material = true
+texture = SubResource("AtlasTexture_fo582")
+offset = Vector2(0, 4)
+hframes = 4
+vframes = 4
+frame = 5
+script = ExtResource("2_12wu3")
+frame_index_map = Dictionary[int, int]({
+0: 0,
+1: 5,
+2: 6
+})
+
+[node name="Sparkles" type="AnimatedSprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.635294)
+material = SubResource("CanvasItemMaterial_fl12q")
+sprite_frames = SubResource("SpriteFrames_hy1s1")
+autoplay = "default"
+frame_progress = 0.263996
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
+
+[node name="ActivateParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, -2)
+emitting = false
+amount = 50
+lifetime = 0.3
+one_shot = true
+speed_scale = 1.15
+explosiveness = 0.65
+randomness = 1.0
+lifetime_randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(4, 3)
+direction = Vector2(0, -1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 60.35
+initial_velocity_max = 105.8
+angular_velocity_max = 341.82
+radial_accel_max = 91.92
+tangential_accel_max = 28.28
+damping_min = 75.758
+damping_max = 75.758
+scale_amount_curve = SubResource("Curve_fo582")
+color_ramp = SubResource("Gradient_5f12p")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_input_event"]
