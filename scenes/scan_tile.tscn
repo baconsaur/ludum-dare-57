@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://bskyn6mwtjfno"]
+
+[ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="1_aveog"]
+[ext_resource type="Script" uid="uid://dxs4s28xj1aww" path="res://scripts/scan_tile.gd" id="2_aveog"]
+[ext_resource type="Texture2D" uid="uid://b3isop8qwbkok" path="res://sprites/fog.png" id="3_vclcd"]
+[ext_resource type="PackedScene" uid="uid://ets8qqjkmqgx" path="res://scenes/cursor.tscn" id="4_qlebh"]
+[ext_resource type="PackedScene" uid="uid://b2wl8t7xyc7w1" path="res://scenes/scan_result.tscn" id="5_kh3lj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
+atlas = ExtResource("1_aveog")
+
+[sub_resource type="Gradient" id="Gradient_kh3lj"]
+offsets = PackedFloat32Array(0.11, 0.3, 0.553333, 0.796667)
+colors = PackedColorArray(0.780392, 0.470588, 0.435294, 1, 0.49, 0.3724, 0.43512, 0.952941, 0.373957, 0.3311, 0.43, 0.521569, 0.373957, 0.3311, 0.43, 0)
+
+[node name="ScanTile" type="Sprite2D"]
+use_parent_material = true
+texture = SubResource("AtlasTexture_fo582")
+offset = Vector2(0, 4)
+hframes = 4
+vframes = 4
+frame = 9
+script = ExtResource("2_aveog")
+frame_index_map = Dictionary[int, int]({
+0: 0,
+1: 9,
+2: 10
+})
+
+[node name="Fog" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_vclcd")
+offset = Vector2(0, -4)
+
+[node name="Cursor" parent="." instance=ExtResource("4_qlebh")]
+
+[node name="ScanResult" parent="." instance=ExtResource("5_kh3lj")]
+visible = false
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
+
+[node name="ActivateParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 100
+lifetime = 0.6
+one_shot = true
+speed_scale = 1.5
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 3.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 125.05
+initial_velocity_max = 125.05
+damping_min = 100.0
+damping_max = 100.0
+color_ramp = SubResource("Gradient_kh3lj")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_input_event"]

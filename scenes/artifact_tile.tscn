@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://bg1mwdngq8s3c"]
+[gd_scene load_steps=22 format=3 uid="uid://bg1mwdngq8s3c"]
 
 [ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="1_12wu3"]
 [ext_resource type="Script" uid="uid://de0bnbi6gxonh" path="res://scripts/artifact_tile.gd" id="2_12wu3"]
 [ext_resource type="Texture2D" uid="uid://b3isop8qwbkok" path="res://sprites/fog.png" id="3_8r8gx"]
 [ext_resource type="Texture2D" uid="uid://d1fmiwegn4gc1" path="res://sprites/sparkles.png" id="3_fl12q"]
 [ext_resource type="PackedScene" uid="uid://ets8qqjkmqgx" path="res://scenes/cursor.tscn" id="4_nn3kr"]
+[ext_resource type="PackedScene" uid="uid://b2wl8t7xyc7w1" path="res://scenes/scan_result.tscn" id="6_xdmjy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
 atlas = ExtResource("1_12wu3")
@@ -87,7 +88,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 10.0
+"speed": 12.0
 }]
 
 [sub_resource type="Curve" id="Curve_fo582"]
@@ -126,6 +127,9 @@ material = SubResource("CanvasItemMaterial_fl12q")
 sprite_frames = SubResource("SpriteFrames_hy1s1")
 autoplay = "default"
 frame_progress = 0.263996
+
+[node name="ScanResult" parent="." instance=ExtResource("6_xdmjy")]
+autoplay = "default"
 
 [node name="Area2D" type="Area2D" parent="."]
 

@@ -1,20 +1,26 @@
 extends Node2D
 
-@export var probe_radius : int = 0
-@export var max_instability : int = 10
+@export var probe_radius : int = 2
+@export var max_stability : int = 10
 @export var levels : Array[PackedScene]
 @export var start_level = 0
 
 var current_layer = 0
-var instability = 0
+var stability = max_stability
 var score = 0
 var level = 0
 var layers : Node2D
 var total_score = 0
 var start_camera : Vector2
+var level_end_descriptions = { # TODO make these not suck
+	"escape": "Yay you did it",
+	"exit_destroyed": "You fucked up",
+	"instability": "Everything is awful",
+}
 
 @onready var camera = $Camera2D
-@onready var instability_progress = $HUD/Margin/Instability
+@onready var stability_progress = $HUD/Margin/StabilityContainer/Stability
+@onready var stability_label = $HUD/Margin/StabilityContainer/Stability/Label
 @onready var score_display = $HUD/Margin/Score
 @onready var hud_container = $HUD/Margin
 @onready var action_blocker = $HUD/ModalContainer/Blocker
@@ -23,7 +29,8 @@ var start_camera : Vector2
 @onready var level_end_text = $HUD/ModalContainer/LevelEnd/Margin/Content/Body/Text
 
 func _ready() -> void:
-	instability_progress.max_value = max_instability
+	stability_progress.max_value = max_stability
+	stability_label.text = str(stability) + "/" + str(max_stability)
 	level_end_modal.hide()
 	
 	start_camera = camera.position
@@ -41,13 +48,14 @@ func init_level():
 		layers.queue_free()
 
 	score = 0
-	instability = 0
+	stability = max_stability
 	current_layer = 0
 	
 	score_display.text = str(score)
-	instability_progress.value = instability
-	instability_progress.modulate = Color.WHITE
-	
+	stability_progress.value = stability
+	stability_progress.self_modulate = Color("#cfa98a")
+	stability_label.text = str(stability) + "/" + str(max_stability)
+
 	layers = levels[level].instantiate()
 	add_child(layers)
 	
@@ -65,6 +73,7 @@ func init_level():
 		layer.connect("escaped", escape_level)
 		layer.connect("got_artifact", update_score.bind(1))
 		layer.connect("lost_artifact", update_score.bind(-1))
+		layer.connect("escape_destroyed", escape_destroyed)
 		layer.get_radius = get_radius
 
 func drop_probe(coords, grid_size, index):
@@ -111,33 +120,40 @@ func target_layer(offset):
 
 func destroy_tile(nodes_remaining):
 	action_blocker.mouse_filter = 0
-	instability += 1
-	instability_progress.value = instability
+	stability -= 1
+	stability_progress.value = stability
+	stability_label.text = str(stability) + "/" + str(max_stability)
+
 	camera.shake()
 	
 	if nodes_remaining <= 0:
 		action_blocker.mouse_filter = 1
 
-	var instability_percent = float(instability) / float(max_instability)
-	if instability_percent > 0.7:
-		instability_progress.modulate = Color("#9a6278")
-	elif instability_percent > 0.4:
-		instability_progress.modulate = Color("#c7786f")
+	var stability_percent = float(stability) / float(max_stability)
+	if stability_percent < 0.3:
+		stability_progress.self_modulate = Color("#9a6278")
+	elif stability_percent < 0.6:
+		stability_progress.self_modulate = Color("#c7786f")
 
-	if instability > max_instability:
-		action_blocker.mouse_filter = 0
-		await get_tree().create_timer(1).timeout
-		show_level_end(false)
+	if stability <= 0:
+		fail_level("instability")
+
+func escape_destroyed():
+	fail_level("exit_destroyed", 0.5)
+
+func fail_level(fail_type, delay=1):
+	action_blocker.mouse_filter = 0
+	await get_tree().create_timer(delay).timeout
+	show_level_end(fail_type, false)
 
 func escape_level():
 	action_blocker.mouse_filter = 0
 	await get_tree().create_timer(1).timeout
 	action_blocker.mouse_filter = 1
-	show_level_end(true)
+	show_level_end("escape", true)
 
-func show_level_end(win=false):
+func show_level_end(end_type, win=false):
 	if win:
-		level_end_title.text = "You Win"
 		total_score += score
 		if len(levels) > level + 1:
 			level += 1
@@ -145,6 +161,8 @@ func show_level_end(win=false):
 			print("todo")
 	else:
 		level_end_title.text = "You Died"
+
+	level_end_text.text = level_end_descriptions[end_type]
 		
 	get_tree().paused = true
 	level_end_modal.show()
@@ -153,7 +171,6 @@ func _on_level_end_action_pressed() -> void:
 	level_end_modal.hide()
 	get_tree().paused = false
 	action_blocker.mouse_filter = 1
-	
 	init_level()
 
 func update_score(value):

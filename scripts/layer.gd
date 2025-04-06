@@ -6,6 +6,7 @@ signal destroyed
 signal escaped
 signal got_artifact
 signal lost_artifact
+signal escape_destroyed
 
 const tile_height = 8
 const tile_width = 16
@@ -36,27 +37,33 @@ func trigger_node(coords):
 
 func destroy_node(coords):
 	var old_node = tile_grid[coords.x][coords.y]
-
 	if not is_instance_valid(old_node):
 		return
-	
-	nodes_to_destroy += 1
 	
 	if old_node.state == 0:
 		old_node.reveal()
 		await get_tree().create_timer(0.25).timeout
 	
 	if old_node is GapTile:
-		nodes_to_destroy -= 1
 		return
-	if old_node is UnstableTile:
+	elif old_node is UnstableTile:
 		if old_node.state != 2:
+			nodes_to_destroy += 1
 			old_node.activate()
-			nodes_to_destroy -= 1
 			return
+
 	if old_node is ArtifactTile and old_node.state == 2:
 		emit_signal("lost_artifact")
+	if old_node is EscapeTile:
+		emit_signal.call_deferred("escape_destroyed")
 
+	nodes_to_destroy += 1
+	create_gap(old_node, coords)
+	nodes_to_destroy -= 1
+
+	emit_signal("destroyed", nodes_to_destroy)
+
+func create_gap(old_node, coords):
 	var old_position = old_node.position
 	tile_container.remove_child(old_node)
 	old_node.queue_free()
@@ -68,9 +75,6 @@ func destroy_node(coords):
 	tile_grid[coords.x][coords.y] = new_node
 	new_node.create_gap()
 	new_node.call_deferred("set_state", 1)
-	
-	nodes_to_destroy -= 1
-	emit_signal("destroyed", nodes_to_destroy)
 
 func tiles_to_grid(tiles):
 	var positions = {}
@@ -108,7 +112,12 @@ func show_layer():
 func trigger_effect(effect, coords):
 	call(effect, coords)
 
-func get_neighbors(coords, radius):
+func get_neighbors(coords, radius, block=false):
+	if block:
+		var node = tile_grid[coords.x][coords.y]
+		if is_instance_valid(node) and node is BlockTile:
+			return []
+
 	var neighbors = []
 	var offsets = [
 		Vector2i(-1, 0),
@@ -133,11 +142,11 @@ func get_neighbors(coords, radius):
 	var current_neighbors = neighbors.duplicate()
 	if radius > 0:
 		for neighbor in current_neighbors:
-			neighbors += get_neighbors(neighbor, radius - 1)
+			neighbors += get_neighbors(neighbor, radius - 1, block)
 	return neighbors
 	
 func reveal_neighbors(coords):
-	for neighbor in get_neighbors(coords, get_radius.call()):
+	for neighbor in get_neighbors(coords, 0):
 		reveal_node(neighbor)
 	
 func destroy(coords):
@@ -153,6 +162,12 @@ func escape_level(_coords):
 
 func collect_artifact(_coords):
 	emit_signal("got_artifact")
+
+func scan_area(coords):
+	for neighbor_coords in get_neighbors(coords, get_radius.call(), true):
+		var node = tile_grid[neighbor_coords.x][neighbor_coords.y]
+		if node.state == 0 and node is not SolidTile and node is not BlockTile:
+			node.set_scanned()
 
 func apply_grid_offset(coords, other_grid_size):
 	var offset = (grid_size - other_grid_size) / 2

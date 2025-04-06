@@ -4,7 +4,7 @@ signal target_layer
 
 @export var drag_delay = 1
 @export var drag_bounds_y = 75
-@export var drag_bounds_x = 80
+@export var drag_bounds_x = 70
 @export var shake_time = 0.25
 @export var shake_factor = 1.5
 

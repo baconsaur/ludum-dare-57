@@ -10,6 +10,7 @@ func trigger_effect():
 	emit_signal("activated", "drop")
 
 func create_gap():
+	fog_sprite.hide()
 	create_particles.emitting = true
 
 func activate():

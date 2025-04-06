@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bfnh4tepcvgu4"]
+[gd_scene load_steps=10 format=3 uid="uid://bfnh4tepcvgu4"]
 
 [ext_resource type="Script" uid="uid://be4dax5nt3u8g" path="res://scripts/unstable_tile.gd" id="1_wo1nd"]
 [ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="2_75krp"]
 [ext_resource type="PackedScene" uid="uid://dqarxwqsgh6jj" path="res://scenes/gap_tile.tscn" id="3_75krp"]
 [ext_resource type="Texture2D" uid="uid://b3isop8qwbkok" path="res://sprites/fog.png" id="4_ls36s"]
 [ext_resource type="PackedScene" uid="uid://ets8qqjkmqgx" path="res://scenes/cursor.tscn" id="5_skyil"]
+[ext_resource type="PackedScene" uid="uid://b2wl8t7xyc7w1" path="res://scenes/scan_result.tscn" id="6_1dee2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
 atlas = ExtResource("2_75krp")
@@ -38,6 +39,9 @@ position = Vector2(0, -4)
 texture = ExtResource("4_ls36s")
 
 [node name="Cursor" parent="." instance=ExtResource("5_skyil")]
+
+[node name="ScanResult" parent="." instance=ExtResource("6_1dee2")]
+visible = false
 
 [node name="Area2D" type="Area2D" parent="."]
 

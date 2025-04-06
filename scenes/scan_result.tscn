@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2wl8t7xyc7w1"]
+
+[ext_resource type="Texture2D" uid="uid://cywbklc6dshvr" path="res://sprites/scan_result.png" id="1_1vhk2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vhk2"]
+atlas = ExtResource("1_1vhk2")
+region = Rect2(0, 0, 8, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvuah"]
+atlas = ExtResource("1_1vhk2")
+region = Rect2(8, 0, 8, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2bgjb"]
+atlas = ExtResource("1_1vhk2")
+region = Rect2(16, 0, 8, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wgfmo"]
+atlas = ExtResource("1_1vhk2")
+region = Rect2(24, 0, 8, 5)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ant45"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vhk2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvuah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2bgjb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wgfmo")
+}, {
+"duration": 8.0,
+"texture": null
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="ScanResult" type="AnimatedSprite2D"]
+modulate = Color(0.78, 0.47112, 0.4368, 0.580392)
+sprite_frames = SubResource("SpriteFrames_ant45")
+autoplay = "default"
+frame_progress = 0.398796
+offset = Vector2(0, -2)

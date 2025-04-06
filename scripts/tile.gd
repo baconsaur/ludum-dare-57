@@ -14,12 +14,17 @@ enum states {HIDDEN, REVEALED, ACTIVATED}
 
 var state = states.HIDDEN
 var activate_particles : CPUParticles2D
+var scan_result : Node2D
 
 @onready var fog_sprite = $Fog
 @onready var cursor = $Cursor
 
 func _ready() -> void:
 	activate_particles = find_child("ActivateParticles")
+	scan_result = find_child("ScanResult")
+	if scan_result:
+		scan_result.hide()
+	
 	if start_revealed:
 		set_state(states.REVEALED)
 	else:
@@ -57,6 +62,8 @@ func activate():
 func set_state(new_state):
 	state = new_state
 	frame = frame_index_map[state]
+	if state != states.HIDDEN and scan_result:
+		scan_result.hide()
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if state != states.REVEALED:
@@ -75,3 +82,20 @@ func await_reveal(interval, done):
 	var tween = get_tree().create_tween()
 	tween.tween_interval(interval)
 	tween.tween_callback(done)
+
+func set_scanned():
+	if state == states.HIDDEN and scan_result:
+		var tween = get_tree().create_tween()
+		tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
+		tween.tween_interval(0.1)
+		tween.tween_property(self, "modulate", Color.WHITE, 0.05)
+		tween.tween_interval(0.1)
+		tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
+		tween.tween_interval(0.1)
+		tween.tween_property(self, "modulate", Color.WHITE, 0.05)
+		tween.tween_interval(0.1)
+		tween.tween_callback(show_scan_indicator)
+
+func show_scan_indicator():
+	scan_result.show()
+	scan_result.set_frame(0)
