@@ -10,19 +10,43 @@ enum states {HIDDEN, REVEALED, ACTIVATED}
 	states.REVEALED: 0,
 	states.ACTIVATED: 0,
 }
+@export var start_revealed = false
+
 var state = states.HIDDEN
 var activate_particles : CPUParticles2D
 
+@onready var fog_sprite = $Fog
+@onready var cursor = $Cursor
+
 func _ready() -> void:
 	activate_particles = find_child("ActivateParticles")
-	set_state(states.HIDDEN)
+	if start_revealed:
+		set_state(states.REVEALED)
+	else:
+		fog_sprite.show()
+		set_state(states.HIDDEN)
+
+func _process(delta: float) -> void:
+	if state != states.REVEALED:
+		return
+	check_cursor()
+
+func check_cursor():
+	var rect = cursor.get_rect()
+	if rect.has_point(get_local_mouse_position()):
+		cursor.show()
+	else:
+		cursor.hide()
 
 func reveal():
 	if state != states.HIDDEN:
 		return
 	set_state(states.REVEALED)
+	fog_sprite.hide()
 
 func activate():
+	cursor.hide()
+	fog_sprite.hide()
 	if state == states.ACTIVATED:
 		return
 	if activate_particles:

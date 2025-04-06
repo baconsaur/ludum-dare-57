@@ -4,6 +4,8 @@ extends BaseTile
 @onready var create_particles = $CreateParticles
 
 func trigger_effect():
+	cursor.hide()
+	fog_sprite.hide()
 	set_state(states.ACTIVATED)
 	emit_signal("activated", "drop")
 
@@ -17,7 +19,7 @@ func await_reveal(interval, done):
 	var tween = get_tree().create_tween()
 	if state == states.HIDDEN:
 		tween.tween_interval(interval)
-		tween.tween_property(self, "self_modulate", Color.TRANSPARENT, 0.35)
+		tween.tween_property(self, "modulate", Color.TRANSPARENT, 0.35)
 	tween.tween_interval(interval)
 	tween.tween_callback(done)
 
@@ -27,3 +29,8 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		
 	if event is InputEventMouseButton and event.is_pressed():
 		activate()
+
+func _process(delta: float) -> void:
+	if state == states.HIDDEN:
+		return
+	check_cursor()

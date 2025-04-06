@@ -1,8 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://bg1mwdngq8s3c"]
+[gd_scene load_steps=21 format=3 uid="uid://bg1mwdngq8s3c"]
 
 [ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="1_12wu3"]
 [ext_resource type="Script" uid="uid://de0bnbi6gxonh" path="res://scripts/artifact_tile.gd" id="2_12wu3"]
+[ext_resource type="Texture2D" uid="uid://b3isop8qwbkok" path="res://sprites/fog.png" id="3_8r8gx"]
 [ext_resource type="Texture2D" uid="uid://d1fmiwegn4gc1" path="res://sprites/sparkles.png" id="3_fl12q"]
+[ext_resource type="PackedScene" uid="uid://ets8qqjkmqgx" path="res://scenes/cursor.tscn" id="4_nn3kr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
 atlas = ExtResource("1_12wu3")
@@ -109,6 +111,13 @@ frame_index_map = Dictionary[int, int]({
 1: 5,
 2: 6
 })
+
+[node name="Fog" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -4)
+texture = ExtResource("3_8r8gx")
+
+[node name="Cursor" parent="." instance=ExtResource("4_nn3kr")]
 
 [node name="Sparkles" type="AnimatedSprite2D" parent="."]
 visible = false

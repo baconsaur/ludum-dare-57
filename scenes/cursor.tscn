@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ets8qqjkmqgx"]
+
+[ext_resource type="Texture2D" uid="uid://c31fiqffay74e" path="res://sprites/cursor.png" id="1_1eco6"]
+[ext_resource type="Texture2D" uid="uid://bi1u3uheh6a25" path="res://sprites/cursor_highlight.png" id="2_s0nli"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_s0nli"]
+blend_mode = 1
+
+[node name="Cursor" type="Sprite2D"]
+visible = false
+texture = ExtResource("1_1eco6")
+
+[node name="Highlight" type="Sprite2D" parent="."]
+self_modulate = Color(0.81, 0.662985, 0.5427, 0.196078)
+material = SubResource("CanvasItemMaterial_s0nli")
+texture = ExtResource("2_s0nli")

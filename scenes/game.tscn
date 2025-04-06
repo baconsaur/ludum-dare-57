@@ -1,14 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://dl6lnp3esmmgm" path="res://scripts/game_controller.gd" id="1_lnu2h"]
-[ext_resource type="PackedScene" uid="uid://cr6gqxnrlmxeq" path="res://scenes/TestLevel.tscn" id="2_iywne"]
+[ext_resource type="PackedScene" uid="uid://cd4f46gf1j4qw" path="res://scenes/levels/level1.tscn" id="2_iywne"]
 [ext_resource type="Script" uid="uid://y72oi8vqaxud" path="res://scripts/camera.gd" id="5_iywne"]
 [ext_resource type="Theme" uid="uid://dlvne1101apsl" path="res://ui/default_theme.tres" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://d0ik1qmr7c3xm" path="res://ui/scenes/level_end.tscn" id="10_vtaks"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
-start_tiles = Array[Vector2i]([Vector2i(2, 2), Vector2i(1, 2), Vector2i(2, 3)])
 levels = Array[PackedScene]([ExtResource("2_iywne")])
 
 [node name="Camera2D" type="Camera2D" parent="."]

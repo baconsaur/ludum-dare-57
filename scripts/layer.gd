@@ -14,6 +14,7 @@ var gap_tile : PackedScene
 var tile_grid = []
 var get_radius : Callable = func(): return 0
 var nodes_to_destroy = 0
+var grid_size = 0
 
 @onready var tile_container = $TileContainer
 
@@ -73,7 +74,7 @@ func destroy_node(coords):
 
 func tiles_to_grid(tiles):
 	var positions = {}
-	var grid_size = sqrt(len(tiles))
+	grid_size = sqrt(len(tiles))
 	assert(not fmod(grid_size, 1))
 	
 	for tile in tiles:
@@ -145,10 +146,17 @@ func destroy(coords):
 		destroy_node(neighbor)
 
 func drop(coords):
-	emit_signal("drop_probe", coords)
+	emit_signal("drop_probe", coords, grid_size)
 
 func escape_level(_coords):
 	emit_signal("escaped")
 
 func collect_artifact(_coords):
 	emit_signal("got_artifact")
+
+func apply_grid_offset(coords, other_grid_size):
+	var offset = (grid_size - other_grid_size) / 2
+	return Vector2i(
+		clamp(coords.x + offset, 0, grid_size - 1),
+		clamp(coords.y + offset, 0, grid_size - 1)
+	)

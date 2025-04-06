@@ -11,6 +11,7 @@ signal target_layer
 var shake_countdown = 0
 var shake_start = Vector2.ZERO
 var drag_cooldown = 0
+var shake_intensity = shake_factor
 
 func _process(delta: float) -> void:
 	if drag_cooldown > 0:
@@ -24,7 +25,8 @@ func _process(delta: float) -> void:
 		offset = Vector2()
 	else:
 		offset = Vector2(
-			randf_range(-shake_factor, shake_factor), randf_range(-shake_factor, shake_factor)
+			randf_range(-shake_intensity, shake_intensity),
+			randf_range(-shake_intensity, shake_intensity)
 		)
 
 func _input(event):
@@ -44,5 +46,6 @@ func focus_layer(layer):
 	position.y = layer.position.y
 	drag_cooldown = drag_delay
 
-func shake():
+func shake(intensity=shake_factor):
 	shake_countdown = shake_time
+	shake_intensity = intensity

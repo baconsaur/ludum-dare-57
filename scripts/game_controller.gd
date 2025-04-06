@@ -1,6 +1,5 @@
 extends Node2D
 
-@export var start_tiles : Array[Vector2i]
 @export var probe_radius : int = 0
 @export var max_instability : int = 10
 @export var levels : Array[PackedScene]
@@ -11,6 +10,8 @@ var instability = 0
 var score = 0
 var level = 0
 var layers : Node2D
+var total_score = 0
+var start_camera : Vector2
 
 @onready var camera = $Camera2D
 @onready var instability_progress = $HUD/Margin/Instability
@@ -24,29 +25,41 @@ var layers : Node2D
 func _ready() -> void:
 	instability_progress.max_value = max_instability
 	level_end_modal.hide()
+	
+	start_camera = camera.position
 	camera.connect("target_layer", target_layer)
 	
 	level = start_level
 	init_level()
 
 func init_level():
+	camera.position = start_camera
+	camera.force_update_scroll()
+	
+	if layers:
+		remove_child(layers)
+		layers.queue_free()
+
+	score = 0
+	instability = 0
+	current_layer = 0
+	
+	score_display.text = str(score)
+	instability_progress.value = instability
+	instability_progress.modulate = Color.WHITE
+	
 	layers = levels[level].instantiate()
 	add_child(layers)
 	
-	var start_layer : Node2D = layers.find_child("Layer0")
-	for tile in start_tiles:
-		start_layer.reveal_node(tile)
-	
+	var start_layer : Node2D = layers.get_child(0)
+
 	var i = 0
 	for layer in layers.get_children():
-		if i == 0:
-			for tile in start_tiles:
-				start_layer.reveal_node(tile)
-		else:
+		if i > 0:
 			layer.hide()
-
 		layer.z_index -= i
 		i += 1
+
 		layer.connect("drop_probe", drop_probe.bind(i))
 		layer.connect("destroyed", destroy_tile)
 		layer.connect("escaped", escape_level)
@@ -54,11 +67,15 @@ func init_level():
 		layer.connect("lost_artifact", update_score.bind(-1))
 		layer.get_radius = get_radius
 
-func drop_probe(coords, index):
+func drop_probe(coords, grid_size, index):
 	var layer = get_layer(index)
+	coords = layer.apply_grid_offset(coords, grid_size)
 	if layer:
 		var hit_tile = layer.trigger_node(coords)
 		change_layer(layer, index)
+		if hit_tile is not GapTile:
+			await get_tree().create_timer(0.165).timeout
+			camera.shake(0.3)
 
 func get_radius():
 	return probe_radius
@@ -121,6 +138,11 @@ func escape_level():
 func show_level_end(win=false):
 	if win:
 		level_end_title.text = "You Win"
+		total_score += score
+		if len(levels) > level + 1:
+			level += 1
+		else:
+			print("todo")
 	else:
 		level_end_title.text = "You Died"
 		
@@ -131,6 +153,8 @@ func _on_level_end_action_pressed() -> void:
 	level_end_modal.hide()
 	get_tree().paused = false
 	action_blocker.mouse_filter = 1
+	
+	init_level()
 
 func update_score(value):
 	score += value

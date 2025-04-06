@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://byo7lxgu6jj05"]
+[gd_scene load_steps=10 format=3 uid="uid://byo7lxgu6jj05"]
 
 [ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="1_7qco6"]
 [ext_resource type="Script" uid="uid://cco4ld8vppbcn" path="res://scripts/escape_tile.gd" id="2_7qco6"]
+[ext_resource type="Texture2D" uid="uid://b3isop8qwbkok" path="res://sprites/fog.png" id="3_mmeib"]
 [ext_resource type="Texture2D" uid="uid://b0x48u10fn88t" path="res://sprites/line_particle.png" id="3_o8oks"]
+[ext_resource type="PackedScene" uid="uid://ets8qqjkmqgx" path="res://scenes/cursor.tscn" id="4_3mnse"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
 atlas = ExtResource("1_7qco6")
@@ -34,6 +36,13 @@ frame_index_map = Dictionary[int, int]({
 1: 7,
 2: 8
 })
+
+[node name="Fog" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -4)
+texture = ExtResource("3_mmeib")
+
+[node name="Cursor" parent="." instance=ExtResource("4_3mnse")]
 
 [node name="Area2D" type="Area2D" parent="."]
 

@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqarxwqsgh6jj"]
+[gd_scene load_steps=8 format=3 uid="uid://dqarxwqsgh6jj"]
 
 [ext_resource type="Script" uid="uid://eyxsgu2hvms8" path="res://scripts/gap_tile.gd" id="1_eandu"]
 [ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="2_kdi4f"]
+[ext_resource type="Texture2D" uid="uid://b3isop8qwbkok" path="res://sprites/fog.png" id="3_kdi4f"]
+[ext_resource type="PackedScene" uid="uid://ets8qqjkmqgx" path="res://scenes/cursor.tscn" id="4_ltjev"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
 atlas = ExtResource("2_kdi4f")
@@ -27,6 +29,13 @@ frame_index_map = Dictionary[int, int]({
 1: 3,
 2: 3
 })
+
+[node name="Fog" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -4)
+texture = ExtResource("3_kdi4f")
+
+[node name="Cursor" parent="." instance=ExtResource("4_ltjev")]
 
 [node name="Area2D" type="Area2D" parent="."]
 
