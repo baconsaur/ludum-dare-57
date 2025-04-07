@@ -67,6 +67,7 @@ func set_state(new_state):
 	frame = frame_index_map[state]
 	if state != states.HIDDEN and scan_result:
 		scan_result.hide()
+		modulate = Color.WHITE
 	if state != states.HIDDEN and temp_scan_tween:
 		temp_scan_tween.kill()
 		modulate = Color.WHITE
@@ -84,6 +85,7 @@ func trigger_effect():
 func await_reveal(interval, done):
 	if state == states.HIDDEN:
 		set_state(states.REVEALED)
+		fog_sprite.hide()
 		interval += 0.15
 	var tween = get_tree().create_tween()
 	tween.tween_interval(interval)
@@ -115,6 +117,7 @@ func scan_effect():
 	tween.tween_interval(0.1)
 	tween.tween_property(self, "modulate", Color.WHITE, 0.05)
 	tween.tween_interval(0.1)
+	tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
 	return tween
 
 func show_scan_indicator():

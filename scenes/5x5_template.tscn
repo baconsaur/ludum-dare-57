@@ -1,0 +1,83 @@
+[gd_scene load_steps=2 format=3 uid="uid://cy15jydwq0tyw"]
+
+[ext_resource type="PackedScene" uid="uid://bcogp6rh8wwx5" path="res://scenes/solid_tile.tscn" id="1_tssr3"]
+
+[node name="5x5Template" type="Node2D"]
+y_sort_enabled = true
+
+[node name="SolidTile31" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-16, -8)
+
+[node name="SolidTile34" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(8, -12)
+
+[node name="SolidTile37" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(32, 0)
+
+[node name="SolidTile39" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(0, -16)
+
+[node name="SolidTile45" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-8, -12)
+
+[node name="SolidTile46" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-24, -4)
+
+[node name="SolidTile51" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-8, 4)
+
+[node name="SolidTile52" parent="." instance=ExtResource("1_tssr3")]
+
+[node name="SolidTile54" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(0, 8)
+
+[node name="SolidTile41" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(0, 16)
+
+[node name="SolidTile43" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-16, 8)
+
+[node name="SolidTile47" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-16, 0)
+
+[node name="SolidTile48" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-24, 4)
+
+[node name="SolidTile49" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-8, -4)
+
+[node name="SolidTile50" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(0, -8)
+
+[node name="SolidTile53" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(16, -8)
+
+[node name="SolidTile55" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(8, -4)
+
+[node name="SolidTile56" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(24, -4)
+
+[node name="SolidTile57" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(16, 0)
+
+[node name="SolidTile58" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(8, 4)
+
+[node name="SolidTile59" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(24, 4)
+
+[node name="SolidTile60" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(16, 8)
+
+[node name="SolidTile61" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(8, 12)
+
+[node name="SolidTile62" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-8, 12)
+
+[node name="SolidTile63" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-8, 12)
+
+[node name="SolidTile44" parent="." instance=ExtResource("1_tssr3")]
+position = Vector2(-32, 0)

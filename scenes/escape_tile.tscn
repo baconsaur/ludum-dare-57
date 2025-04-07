@@ -31,12 +31,12 @@ texture = SubResource("AtlasTexture_fo582")
 offset = Vector2(0, 4)
 hframes = 4
 vframes = 4
-frame = 7
+frame = 1
 script = ExtResource("2_7qco6")
 frame_index_map = Dictionary[int, int]({
 0: 0,
-1: 7,
-2: 8
+1: 1,
+2: 2
 })
 
 [node name="Fog" type="Sprite2D" parent="."]

@@ -9,6 +9,7 @@ signal lost_artifact
 signal escape_destroyed
 signal used_scan
 signal trigger_tutorial
+signal made_move
 
 const tile_height = 8
 const tile_width = 16
@@ -26,6 +27,7 @@ var grid_size = 0
 @onready var scan_sound = $ScanSound
 @onready var pickup_sound = $PickupSound
 @onready var exit_sound = $ExitSound
+@onready var light_sound = $LightSound
 @onready var scan_effect = $ScanParticles
 
 func _ready() -> void:
@@ -73,7 +75,15 @@ func destroy_node(coords):
 
 	create_gap(old_node, coords)
 
-	emit_signal("destroyed")
+func activate_chained(coords):
+	var node = tile_grid[coords.x][coords.y]
+	if not is_instance_valid(node):
+		return
+	
+	if node.state == 0:
+		node.reveal()
+	if node.state != 2 and node is not GapTile:
+		return node
 
 func create_gap(old_node, coords):
 	var old_position = old_node.position
@@ -82,6 +92,7 @@ func create_gap(old_node, coords):
 	
 	var new_node = gap_tile.instantiate()
 	new_node.connect("activated", trigger_effect.bind(Vector2i(coords.x, coords.y)))
+	emit_signal("destroyed")
 	tile_container.add_child(new_node)
 	new_node.position = old_position
 	tile_grid[coords.x][coords.y] = new_node
@@ -123,6 +134,7 @@ func show_layer():
 	self_modulate = Color.WHITE
 
 func trigger_effect(effect, coords):
+	emit_signal("made_move")
 	call(effect, coords)
 
 func get_neighbors(coords, radius, block=false):
@@ -191,7 +203,7 @@ func scan_layer():
 	for row in tile_grid:
 		for node in row:
 			if node.state == 0 and node is not SolidTile and node is not BlockTile:
-				node.set_scanned(true)
+				node.set_scanned()
 	scan_sound.play()
 	scan_effect.emitting = true
 
@@ -201,3 +213,29 @@ func apply_grid_offset(coords, other_grid_size):
 		clamp(coords.x + offset, 0, grid_size - 1),
 		clamp(coords.y + offset, 0, grid_size - 1)
 	)
+
+func illuminate(coords):
+	var action_list = []
+	light_sound.play()
+
+	for neighbor in get_neighbors(coords, 0):
+		var actionable_node = activate_chained(neighbor)
+		if actionable_node and actionable_node not in action_list:
+			action_list.append(actionable_node)
+
+	action_list.sort_custom(sort_lit_nodes)
+
+	for node in action_list:
+		node.process_mode = Node.PROCESS_MODE_DISABLED
+		if node is LightTile:
+			await get_tree().create_timer(0.1).timeout
+		if is_instance_valid(node):
+			node.activate()
+			node.process_mode = Node.PROCESS_MODE_INHERIT
+
+func sort_lit_nodes(n1, n2):
+	var order = [LightTile, BlockTile, SolidTile, UnstableTile, ArtifactTile, EscapeTile, ScanTile]
+	for node_type in order:
+		if n1.is_class(node_type.get_class()):
+			return true
+	return false

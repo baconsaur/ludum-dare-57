@@ -12,7 +12,7 @@ var current_layer = 0
 var stability = max_stability
 var score = 0
 var level = 0
-var layers : Node2D
+var layers : Level
 var total_score = 0
 var start_camera : Vector2
 var level_end_descriptions = { # TODO make these not suck
@@ -33,6 +33,7 @@ var level_end_descriptions = { # TODO make these not suck
 @onready var level_end_title = $HUD/ModalContainer/LevelEnd/Margin/Content/Title
 @onready var level_end_text = $HUD/ModalContainer/LevelEnd/Margin/Content/Body/Text
 @onready var help_arrow = $HUD/Arrow
+@onready var reset_button = $HUD/Margin/Control/RedoButton
 
 func _ready() -> void:
 	stability_progress.max_value = max_stability
@@ -58,20 +59,21 @@ func init_level():
 	if layers:
 		remove_child(layers)
 		layers.queue_free()
-
-	score = 0
-	stability = max_stability
-	current_layer = 0
 	
-	scan_button.text = "SCAN " + str(total_score + score) + "/" + str(scan_cost)
-	scan_charge.value = clamp(total_score + score, 0, scan_cost)
-	stability_progress.value = stability
-	stability_progress.self_modulate = Color("#cfa98a")
-	stability_label.text = str(stability) + "/" + str(max_stability)
+	reset_button.hide()
+	update_score(-score)
 
 	layers = levels[level].instantiate()
 	add_child(layers)
 	
+	max_stability = layers.stability
+	stability = max_stability
+	current_layer = 0
+	
+	stability_progress.value = stability
+	stability_progress.self_modulate = Color("#cfa98a")
+	stability_label.text = str(stability) + "/" + str(max_stability)
+
 	var start_layer : Node2D = layers.get_child(0)
 
 	var i = 0
@@ -88,6 +90,7 @@ func init_level():
 		layer.connect("lost_artifact", update_score.bind(-1))
 		layer.connect("escape_destroyed", escape_destroyed)
 		layer.connect("trigger_tutorial", trigger_tutorial)
+		layer.connect("made_move", func(): reset_button.show())
 		layer.get_radius = get_radius
 
 func drop_probe(coords, grid_size, index):
@@ -176,6 +179,7 @@ func show_level_end(end_type, win=false):
 		
 	get_tree().paused = true
 	level_end_modal.show()
+	reset_button.hide()
 
 func _on_level_end_action_pressed() -> void:
 	level_end_modal.hide()
@@ -198,3 +202,6 @@ func use_scan():
 func trigger_tutorial(tutorial_name):
 	if tutorial_name == "arrow":
 		help_arrow.show()
+
+func _on_restart_pressed() -> void:
+	init_level()

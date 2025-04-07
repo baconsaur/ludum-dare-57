@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cuejq63krfeuk"]
+[gd_scene load_steps=8 format=3 uid="uid://cuejq63krfeuk"]
 
 [ext_resource type="PackedScene" uid="uid://c2dob86agbo46" path="res://scenes/layer.tscn" id="1_71baw"]
+[ext_resource type="Script" uid="uid://cm3bgvceia732" path="res://scripts/level.gd" id="1_ok6xr"]
 [ext_resource type="Shader" uid="uid://bl24edo4whpii" path="res://sprites/hidden_layer.gdshader" id="2_niitk"]
 [ext_resource type="PackedScene" uid="uid://bcogp6rh8wwx5" path="res://scenes/solid_tile.tscn" id="3_d5djh"]
 [ext_resource type="PackedScene" uid="uid://bfnh4tepcvgu4" path="res://scenes/unstable_tile.tscn" id="4_niitk"]
@@ -14,6 +15,7 @@ shader_parameter/mask_color = Color(0.129412, 0.113725, 0.219608, 1)
 shader_parameter/is_active = false
 
 [node name="Level" type="Node2D"]
+script = ExtResource("1_ok6xr")
 
 [node name="Layer" parent="." instance=ExtResource("1_71baw")]
 

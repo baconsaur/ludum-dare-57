@@ -1,16 +1,20 @@
-[gd_scene load_steps=23 format=4 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=34 format=4 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://dl6lnp3esmmgm" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://1jus0piba34e" path="res://scenes/levels/level0.tscn" id="2_gee14"]
-[ext_resource type="PackedScene" uid="uid://cd4f46gf1j4qw" path="res://scenes/levels/level1.tscn" id="2_iywne"]
+[ext_resource type="PackedScene" uid="uid://cd4f46gf1j4qw" path="res://scenes/levels/level1.tscn" id="4_dinhu"]
 [ext_resource type="PackedScene" uid="uid://cuejq63krfeuk" path="res://scenes/levels/level2.tscn" id="4_vtaks"]
 [ext_resource type="Script" uid="uid://y72oi8vqaxud" path="res://scripts/camera.gd" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://c11c3yuqk2wsl" path="res://scenes/levels/level3.tscn" id="5_kvpfn"]
-[ext_resource type="FontFile" uid="uid://cbpux132y7oq2" path="res://ui/fonts/Micro_Chat.ttf" id="5_p57ef"]
+[ext_resource type="PackedScene" uid="uid://cyubwwgfi1koe" path="res://scenes/levels/level4.tscn" id="6_ir15t"]
 [ext_resource type="FontFile" uid="uid://dg6ys6kvxcu54" path="res://ui/fonts/Tiny_Talk.ttf" id="6_u5sy4"]
+[ext_resource type="PackedScene" uid="uid://jiqfqfdda3to" path="res://scenes/levels/level5.tscn" id="7_ir15t"]
+[ext_resource type="Script" uid="uid://dyt5myvkjwlbc" path="res://scripts/scan_tutorial.gd" id="8_dinhu"]
 [ext_resource type="Theme" uid="uid://dlvne1101apsl" path="res://ui/default_theme.tres" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://p7etbj7tcnmn" path="res://scenes/arrow.tscn" id="9_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://d0ik1qmr7c3xm" path="res://ui/scenes/level_end.tscn" id="10_vtaks"]
+[ext_resource type="Texture2D" uid="uid://bhn31l5aiahr2" path="res://sprites/redo.png" id="11_kvuet"]
+[ext_resource type="Texture2D" uid="uid://s4nir4m0iwxi" path="res://sprites/redo_pressed.png" id="12_trtic"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
 bg_color = Color(0.231373, 0.25098, 0.368627, 1)
@@ -48416,17 +48420,78 @@ base_font = SubResource("FontFile_dinhu")
 spacing_top = -1
 spacing_bottom = 1
 
+[sub_resource type="InputEventAction" id="InputEventAction_ir15t"]
+action = &"scan"
+
+[sub_resource type="Shortcut" id="Shortcut_ca42v"]
+events = [SubResource("InputEventAction_ir15t")]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kvpfn"]
+blend_mode = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvpfn"]
+bg_color = Color(0.811765, 0.662745, 0.541176, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 2
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+anti_aliasing = false
+
+[sub_resource type="Animation" id="Animation_kvuet"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_dinhu"]
+resource_name = "flash"
+length = 0.333342
+loop_mode = 1
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_trtic"]
+_data = {
+&"RESET": SubResource("Animation_kvuet"),
+&"flash": SubResource("Animation_dinhu")
+}
+
 [sub_resource type="FontVariation" id="FontVariation_gee14"]
 base_font = ExtResource("6_u5sy4")
 spacing_top = 1
 
-[sub_resource type="FontVariation" id="FontVariation_u5sy4"]
-base_font = ExtResource("5_p57ef")
+[sub_resource type="FontVariation" id="FontVariation_trtic"]
+base_font = ExtResource("6_u5sy4")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
-levels = Array[PackedScene]([ExtResource("2_gee14"), ExtResource("2_iywne"), ExtResource("4_vtaks"), ExtResource("5_kvpfn")])
-start_level = 3
+levels = Array[PackedScene]([ExtResource("2_gee14"), ExtResource("4_dinhu"), ExtResource("4_vtaks"), ExtResource("5_kvpfn"), ExtResource("6_ir15t"), ExtResource("7_ir15t")])
+start_level = 4
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
@@ -48455,7 +48520,6 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 8
 
 [node name="ScoreContainer" type="ProgressBar" parent="HUD/Margin"]
-visible = false
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -48465,6 +48529,7 @@ max_value = 3.0
 step = 1.0
 value = 1.0
 show_percentage = false
+script = ExtResource("8_dinhu")
 
 [node name="ScanButton" type="Button" parent="HUD/Margin/ScoreContainer"]
 layout_mode = 1
@@ -48483,8 +48548,27 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = SubResource("FontVariation_0tnpc")
 theme_override_font_sizes/font_size = 4
 disabled = true
+shortcut = SubResource("Shortcut_ca42v")
 text = "SCAN 0/3"
 flat = true
+
+[node name="Highlight" type="Panel" parent="HUD/Margin/ScoreContainer"]
+visible = false
+modulate = Color(1, 1, 1, 0.709804)
+material = SubResource("CanvasItemMaterial_kvpfn")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kvpfn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD/Margin/ScoreContainer/Highlight"]
+libraries = {
+&"": SubResource("AnimationLibrary_trtic")
+}
 
 [node name="StabilityContainer" type="VBoxContainer" parent="HUD/Margin"]
 visible = false
@@ -48529,10 +48613,27 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_shadow_color = Color(0.180392, 0.164706, 0.309804, 1)
 theme_override_constants/shadow_outline_size = 0
-theme_override_fonts/font = SubResource("FontVariation_u5sy4")
+theme_override_fonts/font = SubResource("FontVariation_trtic")
 theme_override_font_sizes/font_size = 4
 text = "10/10"
 horizontal_alignment = 1
+
+[node name="Control" type="MarginContainer" parent="HUD/Margin"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_top = -4
+
+[node name="RedoButton" type="TextureButton" parent="HUD/Margin/Control"]
+visible = false
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource("11_kvuet")
+texture_pressed = ExtResource("12_trtic")
+texture_hover = ExtResource("11_kvuet")
+texture_disabled = ExtResource("11_kvuet")
 
 [node name="ModalContainer" type="MarginContainer" parent="HUD"]
 anchors_preset = 15
@@ -48571,7 +48672,9 @@ z_index = 5
 position = Vector2(88, 12)
 scale = Vector2(2, 2)
 
+[connection signal="value_changed" from="HUD/Margin/ScoreContainer" to="HUD/Margin/ScoreContainer" method="_on_value_changed"]
 [connection signal="pressed" from="HUD/Margin/ScoreContainer/ScanButton" to="." method="use_scan"]
+[connection signal="pressed" from="HUD/Margin/Control/RedoButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="HUD/ModalContainer/LevelEnd/Margin/Content/Body/Actions/Close" to="." method="_on_level_end_action_pressed"]
 
 [editable path="HUD/ModalContainer/LevelEnd"]

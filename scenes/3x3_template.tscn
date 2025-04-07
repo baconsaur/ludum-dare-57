@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://w55lqpvjic8e"]
+
+[ext_resource type="PackedScene" uid="uid://bcogp6rh8wwx5" path="res://scenes/solid_tile.tscn" id="1_obytp"]
+
+[node name="3x3Template" type="Node2D"]
+y_sort_enabled = true
+
+[node name="SolidTile51" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(-8, 4)
+
+[node name="SolidTile52" parent="." instance=ExtResource("1_obytp")]
+
+[node name="SolidTile54" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(0, 8)
+
+[node name="SolidTile47" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(-16, 0)
+
+[node name="SolidTile49" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(-8, -4)
+
+[node name="SolidTile50" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(0, -8)
+
+[node name="SolidTile55" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(8, -4)
+
+[node name="SolidTile57" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(16, 0)
+
+[node name="SolidTile58" parent="." instance=ExtResource("1_obytp")]
+position = Vector2(8, 4)

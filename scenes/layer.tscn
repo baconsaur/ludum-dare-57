@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c2dob86agbo46"]
+[gd_scene load_steps=12 format=3 uid="uid://c2dob86agbo46"]
 
 [ext_resource type="Script" uid="uid://cqejg1ig4rv1l" path="res://scripts/layer.gd" id="1_n6uvp"]
 [ext_resource type="Shader" uid="uid://bl24edo4whpii" path="res://sprites/hidden_layer.gdshader" id="2_2eb8h"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://di5refpq8r2ko" path="res://sound/scan2.wav" id="6_3b4h0"]
 [ext_resource type="AudioStream" uid="uid://ckogugkoedt7i" path="res://sound/pickup3.wav" id="7_j0ma4"]
 [ext_resource type="AudioStream" uid="uid://lfurktow5hdq" path="res://sound/exit2.wav" id="8_jkrlx"]
+[ext_resource type="AudioStream" uid="uid://c6lfkmw4ctpty" path="res://sound/reveal4.wav" id="9_8tmeu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xyj84"]
 resource_local_to_scene = true
@@ -52,6 +53,10 @@ bus = &"SFX"
 
 [node name="ExitSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_jkrlx")
+bus = &"SFX"
+
+[node name="LightSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_8tmeu")
 bus = &"SFX"
 
 [node name="ScanParticles" type="CPUParticles2D" parent="."]

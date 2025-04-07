@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://c11c3yuqk2wsl"]
+[gd_scene load_steps=10 format=3 uid="uid://c11c3yuqk2wsl"]
 
+[ext_resource type="Script" uid="uid://cm3bgvceia732" path="res://scripts/level.gd" id="1_8w0pe"]
 [ext_resource type="PackedScene" uid="uid://c2dob86agbo46" path="res://scenes/layer.tscn" id="1_f5jb5"]
 [ext_resource type="Shader" uid="uid://bl24edo4whpii" path="res://sprites/hidden_layer.gdshader" id="2_frjko"]
 [ext_resource type="PackedScene" uid="uid://bcogp6rh8wwx5" path="res://scenes/solid_tile.tscn" id="3_f7rt6"]
@@ -16,6 +17,7 @@ shader_parameter/mask_color = Color(0.129412, 0.113725, 0.219608, 1)
 shader_parameter/is_active = false
 
 [node name="Level" type="Node2D"]
+script = ExtResource("1_8w0pe")
 
 [node name="Layer" parent="." instance=ExtResource("1_f5jb5")]
 
@@ -161,6 +163,40 @@ position = Vector2(0, 8)
 [node name="EscapeTile" parent="Layer3/TileContainer" index="24" instance=ExtResource("5_7eb4w")]
 position = Vector2(0, -16)
 
+[node name="Layer4" parent="." instance=ExtResource("1_f5jb5")]
+position = Vector2(0, 100)
+
+[node name="TileContainer" parent="Layer4" index="0"]
+material = SubResource("ShaderMaterial_ok6xr")
+
+[node name="SolidTile29" parent="Layer4/TileContainer" index="0" instance=ExtResource("3_f7rt6")]
+start_revealed = true
+
+[node name="SolidTile28" parent="Layer4/TileContainer" index="1" instance=ExtResource("3_f7rt6")]
+position = Vector2(0, 8)
+
+[node name="SolidTile10" parent="Layer4/TileContainer" index="2" instance=ExtResource("3_f7rt6")]
+position = Vector2(-16, 0)
+
+[node name="SolidTile20" parent="Layer4/TileContainer" index="3" instance=ExtResource("3_f7rt6")]
+position = Vector2(16, 0)
+
+[node name="SolidTile17" parent="Layer4/TileContainer" index="4" instance=ExtResource("3_f7rt6")]
+position = Vector2(0, -8)
+
+[node name="SolidTile19" parent="Layer4/TileContainer" index="5" instance=ExtResource("3_f7rt6")]
+position = Vector2(8, 4)
+
+[node name="SolidTile21" parent="Layer4/TileContainer" index="6" instance=ExtResource("3_f7rt6")]
+position = Vector2(-8, 4)
+
+[node name="SolidTile22" parent="Layer4/TileContainer" index="7" instance=ExtResource("3_f7rt6")]
+position = Vector2(8, -4)
+
+[node name="SolidTile18" parent="Layer4/TileContainer" index="8" instance=ExtResource("3_f7rt6")]
+position = Vector2(-8, -4)
+
 [editable path="Layer"]
 [editable path="Layer2"]
 [editable path="Layer3"]
+[editable path="Layer4"]
