@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://byo7lxgu6jj05"]
+[gd_scene load_steps=17 format=3 uid="uid://byo7lxgu6jj05"]
 
 [ext_resource type="Texture2D" uid="uid://b60i7b2nyokgx" path="res://sprites/grid_tiles.png" id="1_7qco6"]
 [ext_resource type="Script" uid="uid://cco4ld8vppbcn" path="res://scripts/escape_tile.gd" id="2_7qco6"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b0x48u10fn88t" path="res://sprites/line_particle.png" id="3_o8oks"]
 [ext_resource type="PackedScene" uid="uid://ets8qqjkmqgx" path="res://scenes/cursor.tscn" id="4_3mnse"]
 [ext_resource type="PackedScene" uid="uid://b2wl8t7xyc7w1" path="res://scenes/scan_result.tscn" id="5_f6yn4"]
-[ext_resource type="PackedScene" uid="uid://p7etbj7tcnmn" path="res://scenes/arrow.tscn" id="7_g0gji"]
+[ext_resource type="Texture2D" uid="uid://c6qfmvh41bbak" path="res://sprites/exit.png" id="7_g0gji"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fo582"]
 atlas = ExtResource("1_7qco6")
@@ -25,18 +25,54 @@ colors = PackedColorArray(0.949546, 0.958762, 0.905266, 0.917647, 0.80261, 0.83,
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0gji"]
+atlas = ExtResource("7_g0gji")
+region = Rect2(0, 0, 6, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8ndo"]
+atlas = ExtResource("7_g0gji")
+region = Rect2(6, 0, 6, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwsyj"]
+atlas = ExtResource("7_g0gji")
+region = Rect2(12, 0, 6, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20ayx"]
+atlas = ExtResource("7_g0gji")
+region = Rect2(18, 0, 6, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wwsyj"]
+animations = [{
+"frames": [{
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_g0gji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8ndo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wwsyj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20ayx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
 [node name="EscapeTile" type="Sprite2D"]
 use_parent_material = true
 texture = SubResource("AtlasTexture_fo582")
 offset = Vector2(0, 4)
 hframes = 4
 vframes = 4
-frame = 1
+frame = 5
 script = ExtResource("2_7qco6")
 frame_index_map = Dictionary[int, int]({
 0: 0,
-1: 1,
-2: 2
+1: 5,
+2: 6
 })
 
 [node name="Fog" type="Sprite2D" parent="."]
@@ -79,9 +115,10 @@ color_ramp = SubResource("Gradient_5f12p")
 anim_speed_max = 2.0
 anim_offset_curve = SubResource("Curve_o8oks")
 
-[node name="Arrow" parent="." instance=ExtResource("7_g0gji")]
-modulate = Color(0.80261, 0.83, 0.6474, 0.776471)
-position = Vector2(0, -2)
-frame_progress = 0.148092
+[node name="Portal" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -3)
+sprite_frames = SubResource("SpriteFrames_wwsyj")
+autoplay = "default"
+frame_progress = 0.0256923
 
 [connection signal="input_event" from="Area2D" to="." method="_on_input_event"]

@@ -1,10 +1,10 @@
 class_name EscapeTile
 extends BaseTile
 
-@onready var arrow = $Arrow
+@onready var portal = $Portal
 
 func _ready() -> void:
-	arrow.hide()
+	portal.hide()
 	super._ready()
 
 func trigger_effect():
@@ -13,4 +13,4 @@ func trigger_effect():
 func set_state(new_state):
 	super.set_state(new_state)
 	if new_state != states.HIDDEN:
-		arrow.show()
+		portal.show()

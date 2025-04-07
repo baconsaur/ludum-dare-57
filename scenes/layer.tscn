@@ -35,7 +35,6 @@ bus = &"SFX"
 
 [node name="RevealSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_jkrlx")
-volume_db = -4.216
 pitch_scale = 1.34
 bus = &"SFX"
 

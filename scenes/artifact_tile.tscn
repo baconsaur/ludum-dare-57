@@ -105,12 +105,12 @@ texture = SubResource("AtlasTexture_fo582")
 offset = Vector2(0, 4)
 hframes = 4
 vframes = 4
-frame = 5
+frame = 11
 script = ExtResource("2_12wu3")
 frame_index_map = Dictionary[int, int]({
 0: 0,
-1: 5,
-2: 6
+1: 11,
+2: 12
 })
 
 [node name="Fog" type="Sprite2D" parent="."]
@@ -129,7 +129,7 @@ autoplay = "default"
 frame_progress = 0.263996
 
 [node name="ScanResult" parent="." instance=ExtResource("6_xdmjy")]
-autoplay = "default"
+visible = false
 
 [node name="Area2D" type="Area2D" parent="."]
 

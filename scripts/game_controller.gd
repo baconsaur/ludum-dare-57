@@ -30,10 +30,12 @@ var level_end_descriptions = { # TODO make these not suck
 @onready var hud_container = $HUD/Margin
 @onready var action_blocker = $HUD/ModalContainer/Blocker
 @onready var level_end_modal = $HUD/ModalContainer/LevelEnd
-@onready var level_end_title = $HUD/ModalContainer/LevelEnd/Margin/Content/Title
-@onready var level_end_text = $HUD/ModalContainer/LevelEnd/Margin/Content/Body/Text
+@onready var level_end_title = $HUD/ModalContainer/LevelEnd/Panel/Margin/Content/Title
+@onready var level_end_text = $HUD/ModalContainer/LevelEnd/Panel/Margin/Content/Text
 @onready var help_arrow = $HUD/Arrow
 @onready var reset_button = $HUD/Margin/Control/RedoButton
+@onready var modal_button = $HUD/ModalContainer/LevelEnd/Panel/Margin/Content/Actions/Close
+@onready var master_sound = AudioServer.get_bus_index("Master")
 
 func _ready() -> void:
 	stability_progress.max_value = max_stability
@@ -87,7 +89,7 @@ func init_level():
 		layer.connect("destroyed", destroy_tile)
 		layer.connect("escaped", escape_level)
 		layer.connect("got_artifact", update_score.bind(1))
-		layer.connect("lost_artifact", update_score.bind(-1))
+		#layer.connect("lost_artifact", update_score.bind(-1))
 		layer.connect("escape_destroyed", escape_destroyed)
 		layer.connect("trigger_tutorial", trigger_tutorial)
 		layer.connect("made_move", func(): reset_button.show())
@@ -152,7 +154,7 @@ func destroy_tile():
 		stability_progress.self_modulate = Color("#c7786f")
 
 	if stability <= 0:
-		fail_level("instability")
+		fail_level("instability", 0.75)
 
 func escape_destroyed():
 	fail_level("exit_destroyed", 0.5)
@@ -167,15 +169,20 @@ func escape_level():
 
 func show_level_end(end_type, win=false):
 	if win:
+		level_end_title.text = "Level " + str(level+1) + " Complete"
 		total_score += score
 		if len(levels) > level + 1:
 			level += 1
+			modal_button.text = "Next Level"
+			level_end_text.text = ""
 		else:
-			print("todo")
+			level_end_text.text = "Congratulations, you finished all the levels!"
+			modal_button.text = "Replay"
+			level = 0
 	else:
-		level_end_title.text = "You Died"
-
-	level_end_text.text = level_end_descriptions[end_type]
+		level_end_title.text = "Level Failed"
+		level_end_text.text = ""
+		modal_button.text = "Retry"
 		
 	get_tree().paused = true
 	level_end_modal.show()
@@ -205,3 +212,6 @@ func trigger_tutorial(tutorial_name):
 
 func _on_restart_pressed() -> void:
 	init_level()
+
+func _on_mute_button_toggled(toggled_on: bool) -> void:
+	AudioServer.set_bus_mute(master_sound, toggled_on)

@@ -11,5 +11,5 @@ func trigger_effect():
 	emit_signal("activated", "collect_artifact")
 
 func reveal():
-	sparkles.show()
+	#sparkles.show()
 	super.reveal()

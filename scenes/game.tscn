@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=43 format=4 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://dl6lnp3esmmgm" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://1jus0piba34e" path="res://scenes/levels/level0.tscn" id="2_gee14"]
@@ -11,10 +11,17 @@
 [ext_resource type="PackedScene" uid="uid://jiqfqfdda3to" path="res://scenes/levels/level5.tscn" id="7_ir15t"]
 [ext_resource type="Script" uid="uid://dyt5myvkjwlbc" path="res://scripts/scan_tutorial.gd" id="8_dinhu"]
 [ext_resource type="Theme" uid="uid://dlvne1101apsl" path="res://ui/default_theme.tres" id="8_gee14"]
+[ext_resource type="Texture2D" uid="uid://baet68dkksm2l" path="res://sprites/background1.png" id="8_rysoc"]
 [ext_resource type="PackedScene" uid="uid://p7etbj7tcnmn" path="res://scenes/arrow.tscn" id="9_0tnpc"]
-[ext_resource type="PackedScene" uid="uid://d0ik1qmr7c3xm" path="res://ui/scenes/level_end.tscn" id="10_vtaks"]
+[ext_resource type="Texture2D" uid="uid://c17sxkjlxjxgy" path="res://sprites/background2.png" id="9_264po"]
+[ext_resource type="Script" uid="uid://dv66iw1wps6fe" path="res://scripts/background_controller.gd" id="9_ssvqc"]
+[ext_resource type="Texture2D" uid="uid://bcm4uqh2dxc71" path="res://sprites/background3.png" id="10_264po"]
+[ext_resource type="Texture2D" uid="uid://166hb0aq2avu" path="res://sprites/background4.png" id="11_1kice"]
 [ext_resource type="Texture2D" uid="uid://bhn31l5aiahr2" path="res://sprites/redo.png" id="11_kvuet"]
 [ext_resource type="Texture2D" uid="uid://s4nir4m0iwxi" path="res://sprites/redo_pressed.png" id="12_trtic"]
+[ext_resource type="Texture2D" uid="uid://b2w8a8gcmdfxw" path="res://sprites/sound_on.png" id="19_37s47"]
+[ext_resource type="Texture2D" uid="uid://b4hvrjun45kf8" path="res://sprites/sound_off.png" id="20_bt5mj"]
+[ext_resource type="AudioStream" uid="uid://devul10g830hs" path="res://sound/bgm.wav" id="21_5newe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
 bg_color = Color(0.231373, 0.25098, 0.368627, 1)
@@ -48488,15 +48495,71 @@ spacing_top = 1
 [sub_resource type="FontVariation" id="FontVariation_trtic"]
 base_font = ExtResource("6_u5sy4")
 
+[sub_resource type="InputEventAction" id="InputEventAction_ca42v"]
+action = &"reset"
+
+[sub_resource type="Shortcut" id="Shortcut_rysoc"]
+events = [SubResource("InputEventAction_ca42v")]
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
 levels = Array[PackedScene]([ExtResource("2_gee14"), ExtResource("4_dinhu"), ExtResource("4_vtaks"), ExtResource("5_kvpfn"), ExtResource("6_ir15t"), ExtResource("7_ir15t")])
-start_level = 4
+
+[node name="Background" type="Node2D" parent="."]
+z_index = -15
+
+[node name="Parallax2D" type="Parallax2D" parent="Background"]
+modulate = Color(1, 1, 1, 0.705882)
+scroll_scale = Vector2(0, 0.1)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(12, 12)
+repeat_times = 2
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D"]
+texture = ExtResource("8_rysoc")
+
+[node name="Parallax2D2" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0, 0.3)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(20, 20)
+repeat_times = 2
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D2"]
+texture = ExtResource("9_264po")
+
+[node name="Parallax2D3" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0, 0.5)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(40, 40)
+repeat_times = 2
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D3"]
+texture = ExtResource("10_264po")
+
+[node name="Parallax2D4" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0, 0.5)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(92, 92)
+repeat_times = 2
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D4"]
+texture = ExtResource("11_1kice")
+
+[node name="BackgroundController" type="Node2D" parent="."]
+script = ExtResource("9_ssvqc")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
+drag_left_margin = 0.1
+drag_top_margin = 0.1
+drag_right_margin = 0.1
+drag_bottom_margin = 0.1
 editor_draw_limits = true
 editor_draw_drag_margin = true
 script = ExtResource("5_iywne")
@@ -48626,14 +48689,29 @@ theme_override_constants/margin_top = -4
 
 [node name="RedoButton" type="TextureButton" parent="HUD/Margin/Control"]
 visible = false
-custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+shortcut = SubResource("Shortcut_rysoc")
 texture_normal = ExtResource("11_kvuet")
 texture_pressed = ExtResource("12_trtic")
 texture_hover = ExtResource("11_kvuet")
 texture_disabled = ExtResource("11_kvuet")
+
+[node name="Control2" type="MarginContainer" parent="HUD/Margin"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_top = -4
+
+[node name="MuteButton" type="TextureButton" parent="HUD/Margin/Control2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = true
+shortcut_in_tooltip = false
+texture_normal = ExtResource("19_37s47")
+texture_pressed = ExtResource("20_bt5mj")
 
 [node name="ModalContainer" type="MarginContainer" parent="HUD"]
 anchors_preset = 15
@@ -48654,28 +48732,79 @@ visible = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="LevelEnd" parent="HUD/ModalContainer" instance=ExtResource("10_vtaks")]
-visible = false
+[node name="LevelEnd" type="Control" parent="HUD/ModalContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme = ExtResource("8_gee14")
+
+[node name="Panel" type="Panel" parent="HUD/ModalContainer/LevelEnd"]
+custom_minimum_size = Vector2(150, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="HUD/ModalContainer/LevelEnd/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_gee14")
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 8
+
+[node name="Content" type="VBoxContainer" parent="HUD/ModalContainer/LevelEnd/Panel/Margin"]
 layout_mode = 2
 
-[node name="Margin" parent="HUD/ModalContainer/LevelEnd" index="1"]
-theme_override_constants/margin_top = 8
-
-[node name="Title" parent="HUD/ModalContainer/LevelEnd/Margin/Content" index="0"]
+[node name="Title" type="Label" parent="HUD/ModalContainer/LevelEnd/Panel/Margin/Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
 text = "Level Complete"
+
+[node name="Text" type="RichTextLabel" parent="HUD/ModalContainer/LevelEnd/Panel/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 4
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Actions" type="HBoxContainer" parent="HUD/ModalContainer/LevelEnd/Panel/Margin/Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Close" type="Button" parent="HUD/ModalContainer/LevelEnd/Panel/Margin/Content/Actions"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Retry"
 
 [node name="Arrow" parent="HUD" instance=ExtResource("9_0tnpc")]
 visible = false
 modulate = Color(1, 1, 1, 0.623529)
 top_level = true
 z_index = 5
-position = Vector2(88, 12)
+position = Vector2(88, 24)
 scale = Vector2(2, 2)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("21_5newe")
+autoplay = true
 
 [connection signal="value_changed" from="HUD/Margin/ScoreContainer" to="HUD/Margin/ScoreContainer" method="_on_value_changed"]
 [connection signal="pressed" from="HUD/Margin/ScoreContainer/ScanButton" to="." method="use_scan"]
 [connection signal="pressed" from="HUD/Margin/Control/RedoButton" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="HUD/ModalContainer/LevelEnd/Margin/Content/Body/Actions/Close" to="." method="_on_level_end_action_pressed"]
-
-[editable path="HUD/ModalContainer/LevelEnd"]
-[editable path="HUD/ModalContainer/LevelEnd/Margin/Content/Body"]
+[connection signal="toggled" from="HUD/Margin/Control2/MuteButton" to="." method="_on_mute_button_toggled"]
+[connection signal="pressed" from="HUD/ModalContainer/LevelEnd/Panel/Margin/Content/Actions/Close" to="." method="_on_level_end_action_pressed"]
