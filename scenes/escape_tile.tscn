@@ -82,6 +82,6 @@ anim_offset_curve = SubResource("Curve_o8oks")
 [node name="Arrow" parent="." instance=ExtResource("7_g0gji")]
 modulate = Color(0.80261, 0.83, 0.6474, 0.776471)
 position = Vector2(0, -2)
-frame_progress = 0.810372
+frame_progress = 0.148092
 
 [connection signal="input_event" from="Area2D" to="." method="_on_input_event"]

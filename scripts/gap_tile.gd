@@ -27,8 +27,8 @@ func await_reveal(interval, done):
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if state == states.HIDDEN:
 		return
-		
-	if event is InputEventMouseButton and event.is_pressed():
+
+	if event.is_action_pressed("select"):
 		activate()
 
 func _process(delta: float) -> void:

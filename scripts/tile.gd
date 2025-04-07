@@ -2,6 +2,7 @@ class_name BaseTile
 extends Sprite2D
 
 signal activated
+signal scan
 
 enum states {HIDDEN, REVEALED, ACTIVATED}
 
@@ -15,6 +16,8 @@ enum states {HIDDEN, REVEALED, ACTIVATED}
 var state = states.HIDDEN
 var activate_particles : CPUParticles2D
 var scan_result : Node2D
+var can_scan = false
+var temp_scan_tween : Tween
 
 @onready var fog_sprite = $Fog
 @onready var cursor = $Cursor
@@ -64,12 +67,15 @@ func set_state(new_state):
 	frame = frame_index_map[state]
 	if state != states.HIDDEN and scan_result:
 		scan_result.hide()
+	if state != states.HIDDEN and temp_scan_tween:
+		temp_scan_tween.kill()
+		modulate = Color.WHITE
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if state != states.REVEALED:
 		return
 		
-	if event is InputEventMouseButton and event.is_pressed():
+	if event.is_action_pressed("select"):
 		activate()
 
 func trigger_effect():
@@ -83,18 +89,33 @@ func await_reveal(interval, done):
 	tween.tween_interval(interval)
 	tween.tween_callback(done)
 
-func set_scanned():
+func set_scanned(temporary=false):
 	if state == states.HIDDEN and scan_result:
-		var tween = get_tree().create_tween()
-		tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
-		tween.tween_interval(0.1)
-		tween.tween_property(self, "modulate", Color.WHITE, 0.05)
-		tween.tween_interval(0.1)
-		tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
-		tween.tween_interval(0.1)
-		tween.tween_property(self, "modulate", Color.WHITE, 0.05)
-		tween.tween_interval(0.1)
-		tween.tween_callback(show_scan_indicator)
+		if temporary:
+			temp_scan()
+		else:
+			permanent_scan()
+
+func temp_scan():
+	temp_scan_tween = scan_effect()
+	temp_scan_tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
+	temp_scan_tween.tween_interval(5)
+	temp_scan_tween.tween_property(self, "modulate", Color.WHITE, 5)
+
+func permanent_scan():
+	scan_effect().tween_callback(show_scan_indicator)
+
+func scan_effect():
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
+	tween.tween_interval(0.1)
+	tween.tween_property(self, "modulate", Color.WHITE, 0.05)
+	tween.tween_interval(0.1)
+	tween.tween_property(self, "modulate", Color("#d5d1dc"), 0.05)
+	tween.tween_interval(0.1)
+	tween.tween_property(self, "modulate", Color.WHITE, 0.05)
+	tween.tween_interval(0.1)
+	return tween
 
 func show_scan_indicator():
 	scan_result.show()

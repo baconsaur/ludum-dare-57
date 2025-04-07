@@ -38,4 +38,4 @@ animations = [{
 modulate = Color(0.803922, 0.831373, 0.647059, 1)
 sprite_frames = SubResource("SpriteFrames_hmv1p")
 autoplay = "default"
-frame_progress = 0.321754
+frame_progress = 0.306834

@@ -14,3 +14,9 @@ texture = ExtResource("1_1eco6")
 self_modulate = Color(0.81, 0.662985, 0.5427, 0.196078)
 material = SubResource("CanvasItemMaterial_s0nli")
 texture = ExtResource("2_s0nli")
+
+[node name="Highlight2" type="Sprite2D" parent="."]
+self_modulate = Color(0.81, 0.662985, 0.5427, 0.196078)
+show_behind_parent = true
+z_index = -15
+texture = ExtResource("2_s0nli")

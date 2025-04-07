@@ -1,8 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2dob86agbo46"]
+[gd_scene load_steps=11 format=3 uid="uid://c2dob86agbo46"]
 
 [ext_resource type="Script" uid="uid://cqejg1ig4rv1l" path="res://scripts/layer.gd" id="1_n6uvp"]
 [ext_resource type="Shader" uid="uid://bl24edo4whpii" path="res://sprites/hidden_layer.gdshader" id="2_2eb8h"]
-[ext_resource type="PackedScene" uid="uid://bcogp6rh8wwx5" path="res://scenes/solid_tile.tscn" id="3_gemti"]
+[ext_resource type="AudioStream" uid="uid://caullsgrxvq7x" path="res://sound/destroy.wav" id="4_2eb8h"]
+[ext_resource type="AudioStream" uid="uid://cy7te0aj86wyv" path="res://sound/reveal2.wav" id="4_jkrlx"]
+[ext_resource type="AudioStream" uid="uid://b1xryet7bo1ni" path="res://sound/drop.wav" id="5_gemti"]
+[ext_resource type="AudioStream" uid="uid://di5refpq8r2ko" path="res://sound/scan2.wav" id="6_3b4h0"]
+[ext_resource type="AudioStream" uid="uid://ckogugkoedt7i" path="res://sound/pickup3.wav" id="7_j0ma4"]
+[ext_resource type="AudioStream" uid="uid://lfurktow5hdq" path="res://sound/exit2.wav" id="8_jkrlx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xyj84"]
 resource_local_to_scene = true
@@ -10,6 +15,10 @@ shader = ExtResource("2_2eb8h")
 shader_parameter/tint_color = Color(0.231373, 0.25098, 0.368627, 1)
 shader_parameter/mask_color = Color(0.129412, 0.113725, 0.219608, 1)
 shader_parameter/is_active = false
+
+[sub_resource type="Gradient" id="Gradient_jkrlx"]
+offsets = PackedFloat32Array(0.11, 0.3, 0.553333, 0.796667)
+colors = PackedColorArray(0.780392, 0.470588, 0.435294, 1, 0.49, 0.3724, 0.43512, 0.952941, 0.373957, 0.3311, 0.43, 0.521569, 0.373957, 0.3311, 0.43, 0)
 
 [node name="Layer" type="CanvasGroup"]
 z_as_relative = false
@@ -19,76 +28,46 @@ script = ExtResource("1_n6uvp")
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_xyj84")
 
-[node name="SolidTile" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(8, -12)
+[node name="DestroySound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_2eb8h")
+bus = &"SFX"
 
-[node name="SolidTile2" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-8, -12)
+[node name="RevealSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_jkrlx")
+volume_db = -4.216
+pitch_scale = 1.34
+bus = &"SFX"
 
-[node name="SolidTile4" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(16, -8)
+[node name="DropSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_gemti")
+bus = &"SFX"
 
-[node name="SolidTile6" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-8, -4)
+[node name="ScanSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_3b4h0")
+bus = &"SFX"
 
-[node name="SolidTile7" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-16, -8)
+[node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_j0ma4")
+bus = &"SFX"
 
-[node name="SolidTile8" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(0, -16)
+[node name="ExitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_jkrlx")
+bus = &"SFX"
 
-[node name="SolidTile9" parent="TileContainer" instance=ExtResource("3_gemti")]
-
-[node name="SolidTile26" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(8, -4)
-
-[node name="SolidTile27" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-8, 4)
-
-[node name="SolidTile28" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(0, 8)
-
-[node name="SolidTile29" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(0, -8)
-
-[node name="SolidTile10" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-16, 0)
-
-[node name="SolidTile11" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-24, -4)
-
-[node name="SolidTile14" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(8, 4)
-
-[node name="SolidTile15" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(16, 0)
-
-[node name="SolidTile16" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(24, -4)
-
-[node name="SolidTile17" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(32, 0)
-
-[node name="SolidTile18" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(24, 4)
-
-[node name="SolidTile19" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(16, 8)
-
-[node name="SolidTile20" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(8, 12)
-
-[node name="SolidTile21" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(0, 16)
-
-[node name="SolidTile22" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-8, 12)
-
-[node name="SolidTile23" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-16, 8)
-
-[node name="SolidTile24" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-24, 4)
-
-[node name="SolidTile25" parent="TileContainer" instance=ExtResource("3_gemti")]
-position = Vector2(-32, 0)
+[node name="ScanParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 100
+lifetime = 0.6
+one_shot = true
+speed_scale = 1.5
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 3.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 125.05
+initial_velocity_max = 125.05
+damping_min = 100.0
+damping_max = 100.0
+color_ramp = SubResource("Gradient_jkrlx")

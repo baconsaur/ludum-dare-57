@@ -2,7 +2,7 @@ extends Camera2D
 
 signal target_layer
 
-@export var drag_delay = 1
+@export var drag_delay = 0.3
 @export var drag_bounds_y = 75
 @export var drag_bounds_x = 70
 @export var shake_time = 0.25
@@ -30,21 +30,31 @@ func _process(delta: float) -> void:
 		)
 
 func _input(event):
-	if event is InputEventMouseMotion:
-		var screen_center = get_viewport_rect().size / 2
-		var center_offset = event.position - screen_center
+	if event.is_action_pressed("down"):
 		if drag_cooldown > 0:
 			return
-		if abs(center_offset.x) > drag_bounds_x:
+		emit_signal("target_layer", 1)
+	elif event.is_action_pressed("up"):
+		if drag_cooldown > 0:
 			return
-		if center_offset.y < -drag_bounds_y:
-			emit_signal("target_layer", -1)
-		elif center_offset.y > drag_bounds_y:
-			emit_signal("target_layer", 1)
+		emit_signal("target_layer", -1)
+	#elif event is InputEventMouseMotion:
+		#var screen_center = get_viewport_rect().size / 2
+		#var center_offset = event.position - screen_center
+		#if drag_cooldown > 0:
+			#return
+		#if abs(center_offset.x) > drag_bounds_x:
+			#return
+		#if center_offset.y < -drag_bounds_y:
+			#emit_signal("target_layer", -1)
+		#elif center_offset.y > drag_bounds_y:
+			#emit_signal("target_layer", 1)
+			
 
 func focus_layer(layer):
 	position.y = layer.position.y
 	drag_cooldown = drag_delay
+	force_update_scroll()
 
 func shake(intensity=shake_factor):
 	shake_countdown = shake_time

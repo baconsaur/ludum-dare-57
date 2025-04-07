@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwjok7q5h8i2e"]
+
+[ext_resource type="AudioStream" uid="uid://caullsgrxvq7x" path="res://sound/destroy.wav" id="1_g3i0f"]
+
+[node name="DestroySound" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_g3i0f")
+bus = &"SFX"

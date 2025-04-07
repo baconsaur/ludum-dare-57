@@ -19,3 +19,5 @@ mono_crash.*.json
 
 *.aup
 sounds/*_data
+
+sound/extras/

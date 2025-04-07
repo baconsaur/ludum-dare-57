@@ -7,6 +7,8 @@ signal escaped
 signal got_artifact
 signal lost_artifact
 signal escape_destroyed
+signal used_scan
+signal trigger_tutorial
 
 const tile_height = 8
 const tile_width = 16
@@ -18,16 +20,24 @@ var nodes_to_destroy = 0
 var grid_size = 0
 
 @onready var tile_container = $TileContainer
+@onready var destroy_sound = $DestroySound
+@onready var reveal_sound = $RevealSound
+@onready var drop_sound = $DropSound
+@onready var scan_sound = $ScanSound
+@onready var pickup_sound = $PickupSound
+@onready var exit_sound = $ExitSound
+@onready var scan_effect = $ScanParticles
 
 func _ready() -> void:
+	gap_tile = preload("res://scenes/gap_tile.tscn")
 	var children = tile_container.get_children()
 	tile_grid = tiles_to_grid(children)
-	gap_tile = preload("res://scenes/gap_tile.tscn")
 
 func reveal_node(coords):
 	if coords.x < 0 or coords.y < 0 or coords.x >= len(tile_grid) or coords.y >= len(tile_grid[0]):
 		return
 	tile_grid[coords.x][coords.y].reveal()
+	reveal_sound.play()
 
 func trigger_node(coords):
 	show()
@@ -39,16 +49,20 @@ func destroy_node(coords):
 	var old_node = tile_grid[coords.x][coords.y]
 	if not is_instance_valid(old_node):
 		return
-	
+
+	old_node.process_mode = PROCESS_MODE_DISABLED
 	if old_node.state == 0:
 		old_node.reveal()
 		await get_tree().create_timer(0.25).timeout
+
+	if not is_instance_valid(old_node):
+		return
 	
 	if old_node is GapTile:
+		old_node.process_mode = Node.PROCESS_MODE_INHERIT
 		return
 	elif old_node is UnstableTile:
 		if old_node.state != 2:
-			nodes_to_destroy += 1
 			old_node.activate()
 			return
 
@@ -57,11 +71,9 @@ func destroy_node(coords):
 	if old_node is EscapeTile:
 		emit_signal.call_deferred("escape_destroyed")
 
-	nodes_to_destroy += 1
 	create_gap(old_node, coords)
-	nodes_to_destroy -= 1
 
-	emit_signal("destroyed", nodes_to_destroy)
+	emit_signal("destroyed")
 
 func create_gap(old_node, coords):
 	var old_position = old_node.position
@@ -96,6 +108,7 @@ func tiles_to_grid(tiles):
 			var tile = positions.get(Vector2(r, c), null)
 			row_list.append(tile)
 			tile.connect("activated", trigger_effect.bind(Vector2i(r, c)))
+			tile.connect("scan", scan_area.bind(Vector2i(r, c), 1, true))
 		grid.append(row_list)
 
 	return grid
@@ -150,7 +163,9 @@ func reveal_neighbors(coords):
 		reveal_node(neighbor)
 	
 func destroy(coords):
+	destroy_sound.play()
 	destroy_node(coords)
+	
 	for neighbor in get_neighbors(coords, 0):
 		destroy_node(neighbor)
 
@@ -158,9 +173,11 @@ func drop(coords):
 	emit_signal("drop_probe", coords, grid_size)
 
 func escape_level(_coords):
+	exit_sound.play()
 	emit_signal("escaped")
 
 func collect_artifact(_coords):
+	pickup_sound.play()
 	emit_signal("got_artifact")
 
 func scan_area(coords):
@@ -168,6 +185,15 @@ func scan_area(coords):
 		var node = tile_grid[neighbor_coords.x][neighbor_coords.y]
 		if node.state == 0 and node is not SolidTile and node is not BlockTile:
 			node.set_scanned()
+	scan_sound.play()
+
+func scan_layer():
+	for row in tile_grid:
+		for node in row:
+			if node.state == 0 and node is not SolidTile and node is not BlockTile:
+				node.set_scanned(true)
+	scan_sound.play()
+	scan_effect.emitting = true
 
 func apply_grid_offset(coords, other_grid_size):
 	var offset = (grid_size - other_grid_size) / 2

@@ -4,6 +4,9 @@ extends Node2D
 @export var max_stability : int = 10
 @export var levels : Array[PackedScene]
 @export var start_level = 0
+@export var scan_cost = 3
+@export var scan_level = 3
+@export var destroy_level = 2
 
 var current_layer = 0
 var stability = max_stability
@@ -19,14 +22,17 @@ var level_end_descriptions = { # TODO make these not suck
 }
 
 @onready var camera = $Camera2D
+@onready var stability_container = $HUD/Margin/StabilityContainer
 @onready var stability_progress = $HUD/Margin/StabilityContainer/Stability
 @onready var stability_label = $HUD/Margin/StabilityContainer/Stability/Label
-@onready var score_display = $HUD/Margin/Score
+@onready var scan_charge = $HUD/Margin/ScoreContainer
+@onready var scan_button = $HUD/Margin/ScoreContainer/ScanButton
 @onready var hud_container = $HUD/Margin
 @onready var action_blocker = $HUD/ModalContainer/Blocker
 @onready var level_end_modal = $HUD/ModalContainer/LevelEnd
 @onready var level_end_title = $HUD/ModalContainer/LevelEnd/Margin/Content/Title
 @onready var level_end_text = $HUD/ModalContainer/LevelEnd/Margin/Content/Body/Text
+@onready var help_arrow = $HUD/Arrow
 
 func _ready() -> void:
 	stability_progress.max_value = max_stability
@@ -40,6 +46,12 @@ func _ready() -> void:
 	init_level()
 
 func init_level():
+	if level >= scan_level:
+		scan_charge.show()
+		
+	if level >= destroy_level:
+		stability_container.show()
+	
 	camera.position = start_camera
 	camera.force_update_scroll()
 	
@@ -51,7 +63,8 @@ func init_level():
 	stability = max_stability
 	current_layer = 0
 	
-	score_display.text = str(score)
+	scan_button.text = "SCAN " + str(total_score + score) + "/" + str(scan_cost)
+	scan_charge.value = clamp(total_score + score, 0, scan_cost)
 	stability_progress.value = stability
 	stability_progress.self_modulate = Color("#cfa98a")
 	stability_label.text = str(stability) + "/" + str(max_stability)
@@ -74,6 +87,7 @@ func init_level():
 		layer.connect("got_artifact", update_score.bind(1))
 		layer.connect("lost_artifact", update_score.bind(-1))
 		layer.connect("escape_destroyed", escape_destroyed)
+		layer.connect("trigger_tutorial", trigger_tutorial)
 		layer.get_radius = get_radius
 
 func drop_probe(coords, grid_size, index):
@@ -84,6 +98,7 @@ func drop_probe(coords, grid_size, index):
 		change_layer(layer, index)
 		if hit_tile is not GapTile:
 			await get_tree().create_timer(0.165).timeout
+			layer.drop_sound.play()
 			camera.shake(0.3)
 
 func get_radius():
@@ -117,17 +132,15 @@ func target_layer(offset):
 	var layer = get_layer(index)
 	if layer and layer.visible:
 		change_layer(layer, index)
+		if help_arrow.visible:
+			help_arrow.hide()
 
-func destroy_tile(nodes_remaining):
-	action_blocker.mouse_filter = 0
+func destroy_tile():
 	stability -= 1
 	stability_progress.value = stability
 	stability_label.text = str(stability) + "/" + str(max_stability)
 
 	camera.shake()
-	
-	if nodes_remaining <= 0:
-		action_blocker.mouse_filter = 1
 
 	var stability_percent = float(stability) / float(max_stability)
 	if stability_percent < 0.3:
@@ -142,14 +155,11 @@ func escape_destroyed():
 	fail_level("exit_destroyed", 0.5)
 
 func fail_level(fail_type, delay=1):
-	action_blocker.mouse_filter = 0
 	await get_tree().create_timer(delay).timeout
 	show_level_end(fail_type, false)
 
 func escape_level():
-	action_blocker.mouse_filter = 0
 	await get_tree().create_timer(1).timeout
-	action_blocker.mouse_filter = 1
 	show_level_end("escape", true)
 
 func show_level_end(end_type, win=false):
@@ -170,9 +180,21 @@ func show_level_end(end_type, win=false):
 func _on_level_end_action_pressed() -> void:
 	level_end_modal.hide()
 	get_tree().paused = false
-	action_blocker.mouse_filter = 1
 	init_level()
 
 func update_score(value):
 	score += value
-	score_display.text = str(score)
+	scan_button.text = "SCAN " + str(total_score + score) + "/" + str(scan_cost)
+	scan_charge.value = clamp(total_score + score, 0, scan_cost)
+	if total_score + score >= scan_cost:
+		scan_button.disabled = false
+	else:
+		scan_button.disabled = true
+
+func use_scan():
+	layers.get_child(current_layer).scan_layer()
+	update_score(-scan_cost)
+
+func trigger_tutorial(tutorial_name):
+	if tutorial_name == "arrow":
+		help_arrow.show()
