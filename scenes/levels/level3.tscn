@@ -1,0 +1,166 @@
+[gd_scene load_steps=9 format=3 uid="uid://c11c3yuqk2wsl"]
+
+[ext_resource type="PackedScene" uid="uid://c2dob86agbo46" path="res://scenes/layer.tscn" id="1_f5jb5"]
+[ext_resource type="Shader" uid="uid://bl24edo4whpii" path="res://sprites/hidden_layer.gdshader" id="2_frjko"]
+[ext_resource type="PackedScene" uid="uid://bcogp6rh8wwx5" path="res://scenes/solid_tile.tscn" id="3_f7rt6"]
+[ext_resource type="PackedScene" uid="uid://bfnh4tepcvgu4" path="res://scenes/unstable_tile.tscn" id="4_8w0pe"]
+[ext_resource type="PackedScene" uid="uid://byo7lxgu6jj05" path="res://scenes/escape_tile.tscn" id="5_7eb4w"]
+[ext_resource type="PackedScene" uid="uid://dqarxwqsgh6jj" path="res://scenes/gap_tile.tscn" id="5_frjko"]
+[ext_resource type="PackedScene" uid="uid://bg1mwdngq8s3c" path="res://scenes/artifact_tile.tscn" id="6_f7rt6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ok6xr"]
+resource_local_to_scene = true
+shader = ExtResource("2_frjko")
+shader_parameter/tint_color = Color(0.231373, 0.25098, 0.368627, 1)
+shader_parameter/mask_color = Color(0.129412, 0.113725, 0.219608, 1)
+shader_parameter/is_active = false
+
+[node name="Level" type="Node2D"]
+
+[node name="Layer" parent="." instance=ExtResource("1_f5jb5")]
+
+[node name="TileContainer" parent="Layer" index="0"]
+material = SubResource("ShaderMaterial_ok6xr")
+
+[node name="SolidTile29" parent="Layer/TileContainer" index="0" instance=ExtResource("3_f7rt6")]
+start_revealed = true
+
+[node name="SolidTile28" parent="Layer/TileContainer" index="1" instance=ExtResource("3_f7rt6")]
+position = Vector2(0, 8)
+
+[node name="SolidTile10" parent="Layer/TileContainer" index="2" instance=ExtResource("3_f7rt6")]
+position = Vector2(-16, 0)
+
+[node name="SolidTile20" parent="Layer/TileContainer" index="3" instance=ExtResource("3_f7rt6")]
+position = Vector2(16, 0)
+
+[node name="SolidTile17" parent="Layer/TileContainer" index="4" instance=ExtResource("3_f7rt6")]
+position = Vector2(0, -8)
+
+[node name="SolidTile19" parent="Layer/TileContainer" index="5" instance=ExtResource("3_f7rt6")]
+position = Vector2(8, 4)
+
+[node name="SolidTile18" parent="Layer/TileContainer" index="6" instance=ExtResource("3_f7rt6")]
+position = Vector2(-8, -4)
+
+[node name="GapTile" parent="Layer/TileContainer" index="7" instance=ExtResource("5_frjko")]
+position = Vector2(-8, 4)
+
+[node name="GapTile2" parent="Layer/TileContainer" index="8" instance=ExtResource("5_frjko")]
+position = Vector2(8, -4)
+
+[node name="Layer2" parent="." instance=ExtResource("1_f5jb5")]
+position = Vector2(0, 28)
+
+[node name="TileContainer" parent="Layer2" index="0"]
+material = SubResource("ShaderMaterial_ok6xr")
+
+[node name="SolidTile29" parent="Layer2/TileContainer" index="0" instance=ExtResource("3_f7rt6")]
+
+[node name="SolidTile28" parent="Layer2/TileContainer" index="1" instance=ExtResource("3_f7rt6")]
+position = Vector2(0, 8)
+
+[node name="SolidTile10" parent="Layer2/TileContainer" index="2" instance=ExtResource("3_f7rt6")]
+position = Vector2(-8, 4)
+
+[node name="SolidTile17" parent="Layer2/TileContainer" index="3" instance=ExtResource("3_f7rt6")]
+position = Vector2(0, -8)
+
+[node name="SolidTile19" parent="Layer2/TileContainer" index="4" instance=ExtResource("3_f7rt6")]
+position = Vector2(16, 0)
+
+[node name="UnstableTile" parent="Layer2/TileContainer" index="5" instance=ExtResource("4_8w0pe")]
+position = Vector2(8, 4)
+
+[node name="GapTile" parent="Layer2/TileContainer" index="6" instance=ExtResource("5_frjko")]
+position = Vector2(-8, -4)
+
+[node name="ArtifactTile" parent="Layer2/TileContainer" index="7" instance=ExtResource("6_f7rt6")]
+position = Vector2(-16, 0)
+
+[node name="ArtifactTile2" parent="Layer2/TileContainer" index="8" instance=ExtResource("6_f7rt6")]
+position = Vector2(8, -4)
+
+[node name="Layer3" parent="." instance=ExtResource("1_f5jb5")]
+position = Vector2(0, 64)
+
+[node name="TileContainer" parent="Layer3" index="0"]
+material = SubResource("ShaderMaterial_ok6xr")
+
+[node name="SolidTile27" parent="Layer3/TileContainer" index="0" instance=ExtResource("3_f7rt6")]
+position = Vector2(32, 0)
+
+[node name="SolidTile28" parent="Layer3/TileContainer" index="1" instance=ExtResource("3_f7rt6")]
+position = Vector2(-8, 12)
+
+[node name="SolidTile16" parent="Layer3/TileContainer" index="2" instance=ExtResource("3_f7rt6")]
+position = Vector2(8, -4)
+
+[node name="SolidTile23" parent="Layer3/TileContainer" index="3" instance=ExtResource("3_f7rt6")]
+position = Vector2(-32, 0)
+
+[node name="SolidTile24" parent="Layer3/TileContainer" index="4" instance=ExtResource("3_f7rt6")]
+position = Vector2(-24, 4)
+
+[node name="SolidTile31" parent="Layer3/TileContainer" index="5" instance=ExtResource("3_f7rt6")]
+position = Vector2(8, -12)
+
+[node name="SolidTile33" parent="Layer3/TileContainer" index="6" instance=ExtResource("3_f7rt6")]
+position = Vector2(-8, -12)
+
+[node name="SolidTile34" parent="Layer3/TileContainer" index="7" instance=ExtResource("3_f7rt6")]
+position = Vector2(-24, -4)
+
+[node name="SolidTile32" parent="Layer3/TileContainer" index="8" instance=ExtResource("3_f7rt6")]
+position = Vector2(16, -8)
+
+[node name="SolidTile37" parent="Layer3/TileContainer" index="9" instance=ExtResource("3_f7rt6")]
+position = Vector2(8, 4)
+
+[node name="SolidTile15" parent="Layer3/TileContainer" index="10" instance=ExtResource("3_f7rt6")]
+position = Vector2(16, 0)
+
+[node name="SolidTile19" parent="Layer3/TileContainer" index="11" instance=ExtResource("3_f7rt6")]
+position = Vector2(0, 16)
+
+[node name="SolidTile20" parent="Layer3/TileContainer" index="12" instance=ExtResource("3_f7rt6")]
+position = Vector2(-16, 8)
+
+[node name="SolidTile21" parent="Layer3/TileContainer" index="13" instance=ExtResource("3_f7rt6")]
+position = Vector2(-8, -4)
+
+[node name="ArtifactTile" parent="Layer3/TileContainer" index="14" instance=ExtResource("6_f7rt6")]
+
+[node name="UnstableTile" parent="Layer3/TileContainer" index="15" instance=ExtResource("4_8w0pe")]
+position = Vector2(0, -8)
+
+[node name="UnstableTile2" parent="Layer3/TileContainer" index="16" instance=ExtResource("4_8w0pe")]
+position = Vector2(-16, -8)
+
+[node name="UnstableTile3" parent="Layer3/TileContainer" index="17" instance=ExtResource("4_8w0pe")]
+position = Vector2(-16, 0)
+
+[node name="UnstableTile5" parent="Layer3/TileContainer" index="18" instance=ExtResource("4_8w0pe")]
+position = Vector2(8, 12)
+
+[node name="UnstableTile6" parent="Layer3/TileContainer" index="19" instance=ExtResource("4_8w0pe")]
+position = Vector2(24, -4)
+
+[node name="UnstableTile7" parent="Layer3/TileContainer" index="20" instance=ExtResource("4_8w0pe")]
+position = Vector2(24, 4)
+
+[node name="UnstableTile8" parent="Layer3/TileContainer" index="21" instance=ExtResource("4_8w0pe")]
+position = Vector2(16, 8)
+
+[node name="UnstableTile9" parent="Layer3/TileContainer" index="22" instance=ExtResource("4_8w0pe")]
+position = Vector2(-8, 4)
+
+[node name="UnstableTile10" parent="Layer3/TileContainer" index="23" instance=ExtResource("4_8w0pe")]
+position = Vector2(0, 8)
+
+[node name="EscapeTile" parent="Layer3/TileContainer" index="24" instance=ExtResource("5_7eb4w")]
+position = Vector2(0, -16)
+
+[editable path="Layer"]
+[editable path="Layer2"]
+[editable path="Layer3"]
