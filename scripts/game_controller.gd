@@ -175,6 +175,7 @@ func show_level_end(end_type, win=false):
 			level_end_text.text = "Congratulations, you finished all the levels!"
 			modal_button.text = "Replay"
 			level = 0
+			total_score = 0
 	else:
 		level_end_title.text = "Level Failed"
 		level_end_text.text = ""
