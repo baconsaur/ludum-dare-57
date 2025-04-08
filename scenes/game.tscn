@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=4 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=44 format=4 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://dl6lnp3esmmgm" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://1jus0piba34e" path="res://scenes/levels/level0.tscn" id="2_gee14"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cuejq63krfeuk" path="res://scenes/levels/level2.tscn" id="4_vtaks"]
 [ext_resource type="Script" uid="uid://y72oi8vqaxud" path="res://scripts/camera.gd" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://c11c3yuqk2wsl" path="res://scenes/levels/level3.tscn" id="5_kvpfn"]
+[ext_resource type="PackedScene" uid="uid://dmokkepd483mv" path="res://scenes/levels/level6.tscn" id="6_bt5mj"]
 [ext_resource type="PackedScene" uid="uid://cyubwwgfi1koe" path="res://scenes/levels/level4.tscn" id="6_ir15t"]
 [ext_resource type="FontFile" uid="uid://dg6ys6kvxcu54" path="res://ui/fonts/Tiny_Talk.ttf" id="6_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://jiqfqfdda3to" path="res://scenes/levels/level5.tscn" id="7_ir15t"]
@@ -48503,7 +48504,7 @@ events = [SubResource("InputEventAction_ca42v")]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
-levels = Array[PackedScene]([ExtResource("2_gee14"), ExtResource("4_dinhu"), ExtResource("4_vtaks"), ExtResource("5_kvpfn"), ExtResource("6_ir15t"), ExtResource("7_ir15t")])
+levels = Array[PackedScene]([ExtResource("2_gee14"), ExtResource("4_dinhu"), ExtResource("4_vtaks"), ExtResource("5_kvpfn"), ExtResource("6_bt5mj"), ExtResource("6_ir15t"), ExtResource("7_ir15t")])
 
 [node name="Background" type="Node2D" parent="."]
 z_index = -15
@@ -48607,6 +48608,7 @@ offset_right = 20.0
 offset_bottom = 5.5
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = SubResource("FontVariation_0tnpc")
 theme_override_font_sizes/font_size = 4
@@ -48692,7 +48694,9 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+focus_mode = 0
 shortcut = SubResource("Shortcut_rysoc")
+shortcut_in_tooltip = false
 texture_normal = ExtResource("11_kvuet")
 texture_pressed = ExtResource("12_trtic")
 texture_hover = ExtResource("11_kvuet")
@@ -48708,6 +48712,7 @@ theme_override_constants/margin_top = -4
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 0
 toggle_mode = true
 shortcut_in_tooltip = false
 texture_normal = ExtResource("19_37s47")
