@@ -67,6 +67,7 @@ func init_level():
 	stability = max_stability
 	current_layer = 0
 	
+	stability_progress.max_value = max_stability
 	stability_progress.value = stability
 	stability_progress.self_modulate = Color("#cfa98a")
 	stability_label.text = str(stability) + "/" + str(max_stability)
