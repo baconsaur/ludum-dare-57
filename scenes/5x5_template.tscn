@@ -76,8 +76,5 @@ position = Vector2(8, 12)
 [node name="SolidTile62" parent="." instance=ExtResource("1_tssr3")]
 position = Vector2(-8, 12)
 
-[node name="SolidTile63" parent="." instance=ExtResource("1_tssr3")]
-position = Vector2(-8, 12)
-
 [node name="SolidTile44" parent="." instance=ExtResource("1_tssr3")]
 position = Vector2(-32, 0)

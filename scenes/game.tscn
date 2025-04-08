@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=4 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=46 format=4 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://dl6lnp3esmmgm" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://1jus0piba34e" path="res://scenes/levels/level0.tscn" id="2_gee14"]
@@ -9,12 +9,14 @@
 [ext_resource type="PackedScene" uid="uid://dmokkepd483mv" path="res://scenes/levels/level6.tscn" id="6_bt5mj"]
 [ext_resource type="PackedScene" uid="uid://cyubwwgfi1koe" path="res://scenes/levels/level4.tscn" id="6_ir15t"]
 [ext_resource type="FontFile" uid="uid://dg6ys6kvxcu54" path="res://ui/fonts/Tiny_Talk.ttf" id="6_u5sy4"]
+[ext_resource type="PackedScene" uid="uid://hhe7ifqq80sw" path="res://scenes/levels/level7.tscn" id="7_e1j6l"]
 [ext_resource type="PackedScene" uid="uid://jiqfqfdda3to" path="res://scenes/levels/level5.tscn" id="7_ir15t"]
 [ext_resource type="Script" uid="uid://dyt5myvkjwlbc" path="res://scripts/scan_tutorial.gd" id="8_dinhu"]
 [ext_resource type="Theme" uid="uid://dlvne1101apsl" path="res://ui/default_theme.tres" id="8_gee14"]
 [ext_resource type="Texture2D" uid="uid://baet68dkksm2l" path="res://sprites/background1.png" id="8_rysoc"]
 [ext_resource type="PackedScene" uid="uid://p7etbj7tcnmn" path="res://scenes/arrow.tscn" id="9_0tnpc"]
 [ext_resource type="Texture2D" uid="uid://c17sxkjlxjxgy" path="res://sprites/background2.png" id="9_264po"]
+[ext_resource type="PackedScene" uid="uid://bbuwerymviadb" path="res://scenes/levels/level8.tscn" id="9_pl11u"]
 [ext_resource type="Script" uid="uid://dv66iw1wps6fe" path="res://scripts/background_controller.gd" id="9_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://bcm4uqh2dxc71" path="res://sprites/background3.png" id="10_264po"]
 [ext_resource type="Texture2D" uid="uid://166hb0aq2avu" path="res://sprites/background4.png" id="11_1kice"]
@@ -48504,7 +48506,7 @@ events = [SubResource("InputEventAction_ca42v")]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
-levels = Array[PackedScene]([ExtResource("2_gee14"), ExtResource("4_dinhu"), ExtResource("4_vtaks"), ExtResource("5_kvpfn"), ExtResource("6_bt5mj"), ExtResource("6_ir15t"), ExtResource("7_ir15t")])
+levels = Array[PackedScene]([ExtResource("2_gee14"), ExtResource("4_dinhu"), ExtResource("4_vtaks"), ExtResource("5_kvpfn"), ExtResource("7_e1j6l"), ExtResource("6_bt5mj"), ExtResource("6_ir15t"), ExtResource("9_pl11u"), ExtResource("7_ir15t")])
 
 [node name="Background" type="Node2D" parent="."]
 z_index = -15

@@ -15,11 +15,6 @@ var level = 0
 var layers : Level
 var total_score = 0
 var start_camera : Vector2
-var level_end_descriptions = { # TODO make these not suck
-	"escape": "Yay you did it",
-	"exit_destroyed": "You fucked up",
-	"instability": "Everything is awful",
-}
 
 @onready var camera = $Camera2D
 @onready var stability_container = $HUD/Margin/StabilityContainer
